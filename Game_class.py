@@ -13,9 +13,10 @@ class Game():
         self.reset()
 
         #Setting up Fonts
-        self.font = pygame.font.SysFont("Verdana", 40)
+        self.font = pygame.font.SysFont("Verdana", 30)
         self.font_small = pygame.font.SysFont("Verdana", 20)
-        self.waiting_verre = self.font.render("Placer un verre\npour demarrer", True, BLACK)
+        self.waiting_verre = [self.font.render("Placer un verre", True, BLACK),
+                              self.font.render("pour demarrer", True, BLACK)]
 
     def reset(self):
         self.running = False
@@ -39,7 +40,12 @@ class Game():
         return False
 
     def display_waiting(self):
-        self.screen.blit(self.waiting_verre, (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+        self.screen.blit(self.waiting_verre[0], 
+                         ((SCREEN_WIDTH - self.waiting_verre[0].get_rect().width) / 2,
+                         SCREEN_HEIGHT / 2 + 15))
+        self.screen.blit(self.waiting_verre[1], 
+                         ((SCREEN_WIDTH - self.waiting_verre[0].get_rect().width) / 2,
+                         SCREEN_HEIGHT / 2 - 15))
 
     def render(self):
         self.background.render(self.screen)
