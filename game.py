@@ -14,9 +14,6 @@ score = 0
 running = False
 ended = False
 
-size = pygame.display.get_window_size()
-print(size)
-
 def reset():
     running = False
     score = 0
@@ -25,6 +22,10 @@ def reset():
 def check_exit():
     if not pygame.get_init():
         return False
+    if pygame.key.get_pressed()[K_ESCAPE]:
+        pygame.quit()
+        return True
+
     # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
