@@ -1,10 +1,12 @@
-import game
+import Game_class
 from io_cave import *
+
+game = Game_class.Game()
 
 while not game.exit_requested():
     if not verre():
         game.reset()
-        game.running = False
+        running = False
     
     game.loop()
 
