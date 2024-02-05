@@ -3,9 +3,9 @@ from pygame.locals import *
 from const import *
 from Bullet_class import *
 
-class Player():
+class Player(pygame.sprite.Sprite):
     def __init__(self):
-        super().__init__() 
+        pygame.sprite.Sprite.__init__(self) 
         self.image = pygame.image.load("textures/" + PLAYER_IMAGE)
         self.surf = pygame.Surface((52, 52))
         self.rect = self.surf.get_rect(center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.8))
