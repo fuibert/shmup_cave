@@ -24,6 +24,8 @@ class Game():
         self.ended = False
         self.player = Player()
         self.background = Background()
+        self.playerBullets = pygame.sprite.Group()
+        self.enemyBullets = pygame.sprite.Group()
 
     def check_exit(self):
         if not pygame.get_init():
@@ -50,9 +52,13 @@ class Game():
     def render(self):
         self.background.render(self.screen)
         self.player.render(self.screen)
+            
         if not self.running:
              self.display_waiting()
              return
+
+        for bullet in self.playerBullets:
+            bullet.render(self.screen)
         return
 
     def exit_requested(self):
@@ -65,7 +71,9 @@ class Game():
         self.background.animate(self.running)
         self.background.update()
         if self.running:
-            self.player.update()
+            for bullet in self.playerBullets:
+                bullet.update()
+            self.player.update(self.playerBullets)
 
     def loop(self):
         if self.check_exit():

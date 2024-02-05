@@ -9,3 +9,5 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
 FPS = 60
+
+SHOOT_DELAY = 250
