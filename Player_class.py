@@ -6,7 +6,7 @@ from Bullet_class import *
 class Player():
     def __init__(self):
         super().__init__() 
-        self.image = pygame.image.load("textures/Plane5.png")
+        self.image = pygame.image.load("textures/" + PLAYER_IMAGE)
         self.surf = pygame.Surface((52, 52))
         self.rect = self.surf.get_rect(center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.8))
         self.lastShoot = 0

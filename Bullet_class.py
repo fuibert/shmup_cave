@@ -4,7 +4,7 @@ from const import *
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, X, Y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("textures/bullet.png")
+        self.image = pygame.image.load("textures/" + BULLET_IMAGE)
         self.surf = pygame.Surface((9, 5))
         self.rect = self.surf.get_rect()
         self.rect.update((X - 3, Y - 9), (9, 5))

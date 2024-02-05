@@ -4,7 +4,7 @@ from const import *
 
 class Background():
       def __init__(self):
-            self.bgimage = pygame.image.load('textures/bg_1440x960.png')
+            self.bgimage = pygame.image.load('textures/' + BACKGROUND_IMAGE)
             self.rectBGimg = self.bgimage.get_rect()
             self.type = 1
  

@@ -11,3 +11,7 @@ WHITE = (255, 255, 255)
 FPS = 60
 
 SHOOT_DELAY = 250
+
+BACKGROUND_IMAGE = 'bg_1440x960.png'
+PLAYER_IMAGE = 'plane5.png'
+BULLET_IMAGE = 'bullet.png'
