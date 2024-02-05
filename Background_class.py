@@ -12,14 +12,14 @@ class Background():
             self.bgY1 = 0 
             self.bgY2 = -self.rectBGimg.height
  
-            self.movingUpSpeed = -3
+            self.movingUpSpeed = -3 * 60
 
             self.animated = False
          
       def update(self):
           if self.animated:
-            self.bgY1 -= self.movingUpSpeed
-            self.bgY2 -= self.movingUpSpeed
+            self.bgY1 -= self.movingUpSpeed / FPS
+            self.bgY2 -= self.movingUpSpeed / FPS
             if self.bgY1 >= self.rectBGimg.height:
                 self.bgY1 = -self.rectBGimg.height
             if self.bgY2 >= self.rectBGimg.height:
