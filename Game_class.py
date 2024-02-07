@@ -115,8 +115,6 @@ class Game():
             if(len(self.enemies) == 0):
                 self.enemies.add(Enemy())
 
-            print(self.score)
-
     def loop(self):
         if self.check_exit():
             return
