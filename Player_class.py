@@ -30,9 +30,11 @@ class Player(pygame.sprite.Sprite):
         pressed_keys = pygame.key.get_pressed()
 
         if pressed_keys[K_SPACE]:
-            now = pygame.time.get_ticks()
-            if now - self.lastShoot > SHOOT_DELAY: 
-                self.lastShoot = now
-                bullets.add(Bullet(self.rect.left + self.rect.width / 2, self.rect.top))
+            self.shoot(bullets)
+    def shoot(self, bullets):
+        now = pygame.time.get_ticks()
+        if now - self.lastShoot > SHOOT_DELAY: 
+            self.lastShoot = now
+            bullets.add(Bullet(self.rect.left + self.rect.width / 2, self.rect.top, 180))
 
 
