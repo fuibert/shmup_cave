@@ -2,6 +2,7 @@ import pygame
 from const import *
 from Background_class import *
 from Player_class import *
+from Enemy_class import *
 
 class Game():
     def __init__(self):
@@ -26,6 +27,7 @@ class Game():
         self.background = Background()
         self.playerBullets = pygame.sprite.Group()
         self.enemyBullets = pygame.sprite.Group()
+        self.enemies = pygame.sprite.Group()
 
     def check_exit(self):
         if not pygame.get_init():
@@ -57,7 +59,13 @@ class Game():
              self.display_waiting()
              return
 
+        for enemy in self.enemies:
+            enemy.render(self.screen)
+
         for bullet in self.playerBullets:
+            bullet.render(self.screen)
+
+        for bullet in self.enemyBullets:
             bullet.render(self.screen)
         return
 
