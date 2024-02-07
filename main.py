@@ -12,3 +12,4 @@ while not game.exit_requested():
 
     if game.ended:
         reward(game.score)
+        game.reset()

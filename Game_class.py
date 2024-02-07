@@ -53,11 +53,11 @@ class Game():
 
     def render(self):
         self.background.render(self.screen)
-        self.player.render(self.screen)
             
         if not self.running:
-             self.display_waiting()
-             return
+            self.player.render(self.screen)
+            self.display_waiting()
+            return
 
         for enemy in self.enemies:
             enemy.render(self.screen)
@@ -67,6 +67,8 @@ class Game():
 
         for bullet in self.enemyBullets:
             bullet.render(self.screen)
+
+        self.player.render(self.screen)
         return
 
     def exit_requested(self):
@@ -76,12 +78,44 @@ class Game():
         if not self.running:
             if pygame.key.get_pressed()[K_SPACE]:
                 self.running = True
+
         self.background.animate(self.running)
         self.background.update()
+
+        if self.ended:
+            for enemy in self.enemies:
+                enemy.kill()
+            for bullet in self.enemyBullets:
+                bullet.kill()
+            for bullet in self.playerBullets:
+                bullet.kill()
+            return
+
         if self.running:
             for bullet in self.playerBullets:
                 bullet.update()
+
+            for bullet in self.enemyBullets:
+                bullet.update()
+
+            for enemy in self.enemies:
+                enemy.update(self.enemyBullets)
+
             self.player.update(self.playerBullets)
+            
+            for hit in pygame.sprite.spritecollide(self.player, self.enemyBullets, False):
+                self.ended = not self.player.hit()
+                hit.kill()
+
+            for enemy in self.enemies:
+                for hit in pygame.sprite.spritecollide(enemy, self.playerBullets, False):
+                    self.score += enemy.hit()
+                    hit.kill()
+
+            if(len(self.enemies) == 0):
+                self.enemies.add(Enemy())
+
+            print(self.score)
 
     def loop(self):
         if self.check_exit():

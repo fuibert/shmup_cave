@@ -11,6 +11,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.surf.get_rect(center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.8))
         self.lastShoot = 0
         self.speed = 5 * 60
+        self.health = PLAYER_HEALTH
         
     def move(self):
         pressed_keys = pygame.key.get_pressed()         
@@ -25,16 +26,33 @@ class Player(pygame.sprite.Sprite):
         screen.blit(self.image, self.rect)
 
     def update(self, bullets):
+        if self.health <= 0:
+            self.kill()
+            return
         self.move()
 
         pressed_keys = pygame.key.get_pressed()
 
         if pressed_keys[K_SPACE]:
             self.shoot(bullets)
+
     def shoot(self, bullets):
         now = pygame.time.get_ticks()
         if now - self.lastShoot > SHOOT_DELAY: 
             self.lastShoot = now
             bullets.add(Bullet(self.rect.left + self.rect.width / 2, self.rect.top, 180))
+
+    def hit(self):
+        self.health -= BULLET_ATTACK
+        if self.health <= 0:
+            self.reset()
+            return False
+        else:
+            return True
+
+    def reset(self):
+        self.rect = self.surf.get_rect(center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.8))
+        self.lastShoot = 0
+        self.health = PLAYER_HEALTH
 
 
