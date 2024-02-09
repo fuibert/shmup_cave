@@ -3,19 +3,25 @@ from random import randint, randrange
 import pygame
 from const import *
 from Bullet_class import *
+import json
 
 class Enemy(pygame.sprite.Sprite):
+
+    with open("plane_attributes.json", "r") as f:
+        planes = json.loads(f.read())
+
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.reset()
 
     def reset(self):
-        self.type = randint( 0, len(ENEMY_IMAGES) - 1)
+        self.type = randint( 1, len(Enemy.planes) - 1)
+        self.plane = Enemy.planes['avion'+str(self.type)]
         self.image_base = pygame.transform.rotate(
-            pygame.image.load("textures/" + ENEMY_IMAGES[self.type]), 180.0)
+            pygame.image.load("textures/" + self.plane["sprite"]), 180.0)
         self.start_position = randrange(0, SCREEN_WIDTH)
         self.pos = pygame.math.Vector2(self.start_position, -10)
-        self.speed = pygame.math.Vector2( 0, 200)
+        self.speed = pygame.math.Vector2( 0, self.plane["speed"] * SCREEN_HEIGHT)
         self.direction = self.start_angle()
         self.speed.rotate_ip( -self.direction)
         self.image = pygame.transform.rotate(self.image_base, self.direction)
@@ -25,7 +31,7 @@ class Enemy(pygame.sprite.Sprite):
 
         self.lastShoot = 0
 
-        self.health = ENEMY_HEALTH * (self.type / 10)
+        self.health = self.plane["health"] * (self.type / 10)
         self.points = self.health
 
     def start_angle(self):
@@ -65,14 +71,14 @@ class Enemy(pygame.sprite.Sprite):
 
     def shoot(self, bullets):
         now = pygame.time.get_ticks()
-        if now - self.lastShoot > SHOOT_DELAY: 
+        if now - self.lastShoot > self.plane["cadence"]:
             self.lastShoot = now
             direct = pygame.math.Vector2(self.speed.normalize()) * self.rect.width / 2
             pos = pygame.math.Vector2(self.pos) + direct
             bullets.add(Bullet(pos.x, pos.y, -self.direction))
 
     def hit(self):
-        self.health -= BULLET_ATTACK
+        self.health -= self.plane["dammage"]
         if self.health <= 0:
             return self.points
         else:
