@@ -1,5 +1,5 @@
 def verre():
-    return False
+    return True
 
 def reward(score):
     print(score)
