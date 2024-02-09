@@ -25,8 +25,9 @@ class Enemy(pygame.sprite.Sprite):
         self.direction = self.start_angle()
         self.speed.rotate_ip( -self.direction)
         self.image = pygame.transform.rotate(self.image_base, self.direction)
+        self.image = pygame.transform.scale_by(self.image, 3)
 
-        self.surf = pygame.Surface((52, 52))
+        self.surf = pygame.Surface((52 * 3, 52 * 3))
         self.rect = self.surf.get_rect(center = (round(self.pos.x), round(self.pos.y)))
 
         self.lastShoot = 0

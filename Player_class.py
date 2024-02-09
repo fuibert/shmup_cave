@@ -7,7 +7,8 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self) 
         self.image = pygame.image.load("textures/" + PLAYER_IMAGE)
-        self.surf = pygame.Surface((52, 52))
+        self.image = pygame.transform.scale_by(self.image, 3)
+        self.surf = pygame.Surface((52 * 3, 52 * 3))
         self.rect = self.surf.get_rect(center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.8))
         self.lastShoot = 0
         self.speed = 5 * 60

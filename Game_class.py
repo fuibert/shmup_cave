@@ -9,7 +9,7 @@ class Game():
         super().__init__() 
         # pygame setup
         pygame.init()
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))#, pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
         self.clock = pygame.time.Clock()
         self.reset()
 

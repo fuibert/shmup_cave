@@ -7,7 +7,7 @@ class Background(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.bgimage = pygame.image.load('textures/' + BACKGROUND_IMAGE)
         self.rectBGimg = self.bgimage.get_rect()
-        self.type = 1
+        self.type = 0
  
         self.bgX = -self.rectBGimg.width * self.type / 5
         self.bgY1 = 0 
