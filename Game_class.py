@@ -13,7 +13,7 @@ class Game():
         super().__init__() 
         # pygame setup
         pygame.init()
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode((1080, 1920), pygame.FULLSCREEN | pygame.SCALED)
         self.clock = pygame.time.Clock()
         self.reset()
 
@@ -28,7 +28,8 @@ class Game():
         self.score = 0
         self.ended = False
         self.player = Player()
-        self.background = Background()
+        SCREEN_WIDTH, SCREEN_HEIGHT = pygame.display.get_window_size()
+        self.background = Background(SCREEN_WIDTH)
         self.playerBullets = pygame.sprite.Group()
         self.enemyBullets = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()

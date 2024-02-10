@@ -3,13 +3,14 @@ from pygame.locals import *
 from const import *
 
 class Background(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, width):
         pygame.sprite.Sprite.__init__(self)
         self.bgimage = pygame.image.load('textures/' + BACKGROUND_IMAGE)
+        self.bgimage = pygame.transform.scale_by(self.bgimage, width/ self.bgimage.get_rect().width)
         self.rectBGimg = self.bgimage.get_rect()
         self.type = 0
  
-        self.bgX = -self.rectBGimg.width * self.type / 5
+        self.bgX = 0
         self.bgY1 = 0 
         self.bgY2 = -self.rectBGimg.height
 
@@ -38,8 +39,8 @@ class Background(pygame.sprite.Sprite):
         elif pressed_keys[K_5]:
             self.type = 4
 
-        self.bgX = -self.rectBGimg.width * self.type / 5
-             
+        self.bgX = 0
+                     
     def render(self, screen):
         screen.blit(self.bgimage, (self.bgX, self.bgY1))
         screen.blit(self.bgimage, (self.bgX, self.bgY2))
