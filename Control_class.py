@@ -1,25 +1,27 @@
 import pygame
 from pygame.locals import *
 
+SENSIBILITY = 0.1
+
 class Control():
     def __init__(self, joystick):
         self.joystick = joystick
 
     def left(self):
         pressed_keys = pygame.key.get_pressed()
-        return pressed_keys[K_LEFT] or self.joystick != None and self.joystick.get_axis(0) < -0.5
+        return pressed_keys[K_LEFT] or self.joystick != None and self.joystick.get_axis(0) < -SENSIBILITY
 
     def right(self):
         pressed_keys = pygame.key.get_pressed()
-        return pressed_keys[K_RIGHT] or self.joystick != None and self.joystick.get_axis(0) > 0.5
+        return pressed_keys[K_RIGHT] or self.joystick != None and self.joystick.get_axis(0) > SENSIBILITY
 
     def up(self):
         pressed_keys = pygame.key.get_pressed()
-        return pressed_keys[K_UP] or self.joystick != None and self.joystick.get_axis(1) < -0.5
+        return pressed_keys[K_UP] or self.joystick != None and self.joystick.get_axis(1) < -SENSIBILITY
 
     def down(self):
         pressed_keys = pygame.key.get_pressed()
-        return pressed_keys[K_DOWN] or self.joystick != None and self.joystick.get_axis(1) > 0.5
+        return pressed_keys[K_DOWN] or self.joystick != None and self.joystick.get_axis(1) > SENSIBILITY
 
     def shoot(self):
         pressed_keys = pygame.key.get_pressed()
