@@ -3,8 +3,12 @@ from const import *
 from Background_class import *
 from Player_class import *
 from Enemy_class import *
+import datetime
 
 class Game():
+
+    apparition_rate = datetime.datetime.now() + datetime.timedelta(seconds=randint(0, 7))
+
     def __init__(self):
         super().__init__() 
         # pygame setup
@@ -115,6 +119,10 @@ class Game():
                 for hit in pygame.sprite.spritecollide(enemy, self.playerBullets, False):
                     self.score += enemy.hit()
                     hit.kill()
+
+            if Game.apparition_rate <= datetime.datetime.now():
+                self.enemies.add(Enemy())
+                Game.apparition_rate += datetime.timedelta(seconds=randint(0, 7))
 
             if(len(self.enemies) == 0):
                 self.enemies.add(Enemy())

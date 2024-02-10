@@ -10,19 +10,13 @@ WHITE = (255, 255, 255)
 
 FPS = 120
 
-SHOOT_DELAY = 2500
-BULLET_SPEED = 600
+SHOOT_DELAY = 1
+BULLET_SPEED = 1500
 BULLET_ATTACK = 5
 
-PLAYER_HEALTH = 100
+PLAYER_HEALTH = 10000000
 ENEMY_HEALTH = 80
 
 BACKGROUND_IMAGE = 'background_1.png' #'bg_1440x960.png'
 PLAYER_IMAGE = 'plane5.png'
 BULLET_IMAGE = 'bullet_1.png'
-ENEMY_IMAGES = [
-    'plane2.png',
-    'plane4.png',
-    'plane6.png',
-    'plane8.png'
-]
