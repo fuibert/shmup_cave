@@ -1,7 +1,7 @@
 import pygame
-from pygame.locals import *
 from const import *
 from Bullet_class import *
+from Control_class import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, joystick):
@@ -21,21 +21,16 @@ class Player(pygame.sprite.Sprite):
 
         self.max_length = 50
 
-        self.joystick = joystick
+        self.control = Control(joystick)
 
-    def move(self):
-        pressed_keys = pygame.key.get_pressed()         
-        if self.rect.left > 0:
-              if pressed_keys[K_LEFT] or self.joystick != None and self.joystick.get_axis(0) < -0.5:
+    def move(self):         
+        if self.rect.left > 0 and self.control.left():
                   self.rect.move_ip( -self.speed / FPS, 0)
-        if self.rect.right < SCREEN_WIDTH:        
-              if pressed_keys[K_RIGHT] or self.joystick != None and self.joystick.get_axis(0) > 0.5:
+        if self.rect.right < SCREEN_WIDTH and self.control.right():
                   self.rect.move_ip( self.speed / FPS, 0)
-        if self.rect.bottom > 0:
-            if pressed_keys[K_UP] or self.joystick != None and self.joystick.get_axis(1) < -0.5:
+        if self.rect.bottom > 0 and self.control.up():
                 self.rect.move_ip(0, -self.speed / FPS)
-        if self.rect.top < SCREEN_HEIGHT:
-            if pressed_keys[K_DOWN] or self.joystick != None and self.joystick.get_axis(1) > 0.5:
+        if self.rect.top < SCREEN_HEIGHT and self.control.down():
                 self.rect.move_ip(0, self.speed / FPS)
 
     def render(self, screen):
@@ -49,7 +44,7 @@ class Player(pygame.sprite.Sprite):
 
         pressed_keys = pygame.key.get_pressed()
 
-        if pressed_keys[K_SPACE]:
+        if self.control.shoot():
             self.shoot(bullets)
 
     def shoot(self, bullets):

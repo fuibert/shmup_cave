@@ -5,6 +5,7 @@ from Player_class import *
 from Enemy_class import *
 import datetime
 import json
+from Control_class import *
 
 class Game():
 
@@ -46,18 +47,21 @@ class Game():
 
         if len(self.joysticks) > 0:
             self.player = Player(self.joysticks[0])
+            self.control = Control(self.joysticks[0])
         else:
             self.player = Player(None)
+            self.control = Control(None)
         SCREEN_WIDTH, SCREEN_HEIGHT = pygame.display.get_window_size()
         self.background = Background(SCREEN_WIDTH)
         self.playerBullets = pygame.sprite.Group()
         self.enemyBullets = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
 
+
     def check_exit(self):
         if not pygame.get_init():
             return False
-        if pygame.key.get_pressed()[K_ESCAPE]:
+        if self.control.escape():
             pygame.quit()
             return True
 
@@ -105,7 +109,7 @@ class Game():
 
     def update(self):
         if not self.running:
-            if pygame.key.get_pressed()[K_SPACE]:
+            if self.control.shoot():
                 self.running = True
 
         self.background.animate(self.running)
