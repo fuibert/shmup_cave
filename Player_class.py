@@ -12,7 +12,7 @@ class Player(pygame.sprite.Sprite):
         self.surf = pygame.Surface((52 * 3, 52 * 3))
         self.rect = self.surf.get_rect(center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.8))
         self.lastShoot = 0
-        self.speed = 5 * 60 * 3
+        self.speed = PLAYER_SPEED
         self.health = PLAYER_HEALTH
         
     def move(self):
