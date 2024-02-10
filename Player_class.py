@@ -22,6 +22,14 @@ class Player(pygame.sprite.Sprite):
         if self.rect.right < SCREEN_WIDTH:        
               if pressed_keys[K_RIGHT]:
                   self.rect.move_ip( self.speed / FPS, 0)
+        print(self.rect.bottom)
+        print(self.rect.top)
+        if self.rect.bottom > 0:
+            if pressed_keys[K_UP]:
+                self.rect.move_ip(0, -self.speed / FPS)
+        if self.rect.top < SCREEN_HEIGHT:
+            if pressed_keys[K_DOWN]:
+                self.rect.move_ip(0, self.speed / FPS)
 
     def render(self, screen):
         screen.blit(self.image, self.rect)
