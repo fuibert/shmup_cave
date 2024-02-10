@@ -14,6 +14,11 @@ class Game():
         # pygame setup
         pygame.init()
         self.screen = pygame.display.set_mode((1080, 1920), pygame.FULLSCREEN | pygame.SCALED)
+        pygame.joystick.init()
+        self.joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
+        if len(self.joysticks) > 1:
+            print("too many joysticks, plug onlly one. Bouffon va")
+            exit
         self.clock = pygame.time.Clock()
         self.reset()
 
@@ -27,7 +32,11 @@ class Game():
         self.running = False
         self.score = 0
         self.ended = False
-        self.player = Player()
+
+        if len(self.joysticks) > 0:
+            self.player = Player(self.joysticks[0])
+        else:
+            self.player = Player(None)
         SCREEN_WIDTH, SCREEN_HEIGHT = pygame.display.get_window_size()
         self.background = Background(SCREEN_WIDTH)
         self.playerBullets = pygame.sprite.Group()
