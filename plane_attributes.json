@@ -1,66 +1,66 @@
 {
 	"avion1":{
 		"sprite":"plane1.png",
-		"speed":1,
-		"health":1,
+		"speed":0.5,
+		"health":2,
 		"cadence":1200,
-		"dammage":1,
+		"dammage":5,
 		"score":1
 	},
 	"avion2":{
 		"sprite":"plane2.png",
-		"speed":1,
-		"health":1,
+		"speed":0.5,
+		"health":2,
 		"cadence":1200,
-		"dammage":1,
+		"dammage":5,
 		"score":2
 	},
 	"avion3":{
 		"sprite":"plane3.png",
-		"speed":1,
-		"health":1,
+		"speed":0.5,
+		"health":2,
 		"cadence":1200,
-		"dammage":1,
+		"dammage":5,
 		"score":3
 	},
 	"avion4":{
 		"sprite":"plane4.png",
 		"speed":1,
-		"health":1,
+		"health":3,
 		"cadence":1200,
-		"dammage":1,
+		"dammage":10,
 		"score":4
 	},
 	"avion5":{
 		"sprite":"plane6.png",
-		"speed":0.3,
-		"health":1,
-		"cadence":1200,
-		"dammage":1,
+		"speed":1.2,
+		"health":5,
+		"cadence":1500,
+		"dammage":15,
 		"score":5
 	},
 	"avion6":{
 		"sprite":"plane7.png",
-		"speed":0.5,
-		"health":1,
+		"speed":1.5,
+		"health":8,
 		"cadence":1200,
-		"dammage":1,
+		"dammage":25,
 		"score":6
 	},
 	"avion7":{
 		"sprite":"plane8.png",
-		"speed":0.1,
-		"health":1,
-		"cadence":1200,
-		"dammage":1,
+		"speed":0.5,
+		"health":12,
+		"cadence":400,
+		"dammage":45,
 		"score":7
 	},
 	"avion8":{
 		"sprite":"plane9.png",
-		"speed":0.2,
-		"health":1,
+		"speed":1,
+		"health":3,
 		"cadence":1200,
-		"dammage":1,
+		"dammage":10,
 		"score":8
 	}
 }
