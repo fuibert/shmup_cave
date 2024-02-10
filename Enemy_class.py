@@ -33,7 +33,7 @@ class Enemy(pygame.sprite.Sprite):
         self.lastShoot = 0
 
         self.health = self.plane["health"] * (self.type / 10)
-        self.points = self.health
+        self.points = self.plane["score"]
 
     def start_angle(self):
         # calcul de l'angle à gauche de l'avion

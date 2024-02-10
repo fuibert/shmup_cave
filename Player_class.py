@@ -17,6 +17,8 @@ class Player(pygame.sprite.Sprite):
         self.hearth_image = pygame.transform.scale_by(self.hearth_image, 0.1)
         self.health_rect = self.hearth_image.get_rect(center=(15,15))
 
+        self.school = "CAVE"
+
         self.max_length = 50
 
         self.joystick = joystick
@@ -58,7 +60,6 @@ class Player(pygame.sprite.Sprite):
 
     def hit(self):
         self.health -= BULLET_ATTACK
-        # self.render_health_bar()
         if self.health <= 0:
             self.reset()
             return False

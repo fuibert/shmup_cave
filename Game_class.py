@@ -4,6 +4,7 @@ from Background_class import *
 from Player_class import *
 from Enemy_class import *
 import datetime
+import json
 
 class Game():
 
@@ -20,7 +21,17 @@ class Game():
             print("too many joysticks, plug onlly one. Bouffon va")
             exit
         self.clock = pygame.time.Clock()
+        with open("score_board.json", "r") as f:
+            self.score_board = json.loads(f.read())
         self.reset()
+
+        self.score_max = 0
+        for item in self.score_board:
+            if len(self.score_board[item]) > 0:
+                if max(self.score_board[item]) > self.score_max:
+                    self.score_max = max(self.score_board[item])
+                    self.school_score_max = item
+
 
         #Setting up Fonts
         self.font = pygame.font.SysFont("Verdana", 30)
@@ -84,6 +95,9 @@ class Game():
 
         self.player.render(self.screen)
         self.player.render_health_bar(self.screen)
+        self.display_score = self.font.render("SCORE: " + str(self.score), True, BLACK)
+        self.screen.blit(self.display_score, (SCREEN_WIDTH - self.display_score.get_rect().width, 20))
+
         return
 
     def exit_requested(self):
@@ -96,15 +110,6 @@ class Game():
 
         self.background.animate(self.running)
         self.background.update()
-
-        if self.ended:
-            for enemy in self.enemies:
-                enemy.kill()
-            for bullet in self.enemyBullets:
-                bullet.kill()
-            for bullet in self.playerBullets:
-                bullet.kill()
-            return
 
         if self.running:
             for bullet in self.playerBullets:
@@ -135,6 +140,17 @@ class Game():
             if(len(self.enemies) == 0):
                 self.enemies.add(Enemy())
 
+        if self.ended:
+            for enemy in self.enemies:
+                enemy.kill()
+            for bullet in self.enemyBullets:
+                bullet.kill()
+            for bullet in self.playerBullets:
+                bullet.kill()
+            self.score_board[self.player.school].append(self.score)
+            self.store_score()
+            return
+
     def loop(self):
         if self.check_exit():
             return
@@ -148,3 +164,10 @@ class Game():
         pygame.display.flip()
     
         self.clock.tick(FPS)  # limits FPS to 60
+
+    def store_score(self):
+        if self.score_max < self.score:
+            self.score_max = self.score
+            self.school_score_max = self.player.school
+        with open("score_board.json", "w") as f:
+            f.write(json.dumps(self.score_board))
