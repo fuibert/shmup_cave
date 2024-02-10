@@ -73,6 +73,7 @@ class Game():
             bullet.render(self.screen)
 
         self.player.render(self.screen)
+        self.player.render_health_bar(self.screen)
         return
 
     def exit_requested(self):
@@ -106,6 +107,7 @@ class Game():
                 enemy.update(self.enemyBullets)
 
             self.player.update(self.playerBullets)
+            self.player.render_health_bar(self.screen)
             
             for hit in pygame.sprite.spritecollide(self.player, self.enemyBullets, False):
                 self.ended = not self.player.hit()

@@ -13,7 +13,11 @@ class Player(pygame.sprite.Sprite):
         self.lastShoot = 0
         self.speed = PLAYER_SPEED
         self.health = PLAYER_HEALTH
-        
+        self.hearth_image = pygame.image.load('textures/' + HEARTH_IMAGE)
+        self.health_rect = self.hearth_image.get_rect(center=(15,15))
+
+        self.max_length = 50
+
     def move(self):
         pressed_keys = pygame.key.get_pressed()         
         if self.rect.left > 0:
@@ -22,8 +26,6 @@ class Player(pygame.sprite.Sprite):
         if self.rect.right < SCREEN_WIDTH:        
               if pressed_keys[K_RIGHT]:
                   self.rect.move_ip( self.speed / FPS, 0)
-        print(self.rect.bottom)
-        print(self.rect.top)
         if self.rect.bottom > 0:
             if pressed_keys[K_UP]:
                 self.rect.move_ip(0, -self.speed / FPS)
@@ -53,11 +55,19 @@ class Player(pygame.sprite.Sprite):
 
     def hit(self):
         self.health -= BULLET_ATTACK
+        # self.render_health_bar()
         if self.health <= 0:
             self.reset()
             return False
         else:
             return True
+
+    def render_health_bar(self, surface):
+        surface.blit(self.hearth_image, self.hearth_image.get_rect())
+        pygame.draw.rect(surface, (0, 0, 0), pygame.Rect(46, 6, PLAYER_HEALTH+58, 27), 2)
+        bar_position = [50, 10, self.health+50 , 20]
+        pygame.draw.rect(surface, GREEN, bar_position)
+
 
     def reset(self):
         self.rect = self.surf.get_rect(center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.8))
