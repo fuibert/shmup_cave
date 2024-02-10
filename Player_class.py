@@ -14,6 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = PLAYER_SPEED
         self.health = PLAYER_HEALTH
         self.hearth_image = pygame.image.load('textures/' + HEARTH_IMAGE)
+        self.hearth_image = pygame.transform.scale_by(self.hearth_image, 0.1)
         self.health_rect = self.hearth_image.get_rect(center=(15,15))
 
         self.max_length = 50
