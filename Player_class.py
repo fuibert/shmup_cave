@@ -15,16 +15,16 @@ class Player(pygame.sprite.Sprite):
         self.hitted = 0
         self.explosion_images = utils.load_explosions_sprites()
         self.explode_time = 0
-        self.alive = True
         self.surf = pygame.Surface((52 * 3, 52 * 3))
         self.rect = self.surf.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.8))
         self.lastShoot = 0
         self.speed = PLAYER_SPEED
         self.health = PLAYER_HEALTH
-        self.playable = False
-        self.animated = False
-
+        
         self.healthBar = HealthBar(self.rect.width)
+
+        self.health_state = HEALTH_STATE.ALIVE
+        self.animation = ANIMATION_STATE.IDLE
 
         self.school = "CAVE"
 
@@ -33,11 +33,13 @@ class Player(pygame.sprite.Sprite):
         self.control = Control(joystick)
 
     def move(self):
-        if self.animated:
+        if self.animation == ANIMATION_STATE.IDLE:
+            return
+
+        if self.animation == ANIMATION_STATE.ANIMATED:
             self.rect.move_ip(0, -self.speed * 1.5 / FPS)
             if (self.rect.center[1] <= SCREEN_HEIGHT * 0.8):
-                self.playable = True
-                self.animated = False
+                self.animation = ANIMATION_STATE.PLAYABLE
             return
 
 
@@ -53,20 +55,18 @@ class Player(pygame.sprite.Sprite):
 
     def render(self, screen):
         screen.blit(self.get_current_image(), self.rect)
-        if self.playable:
+        if self.animation == ANIMATION_STATE.PLAYABLE:
             self.healthBar.render(screen, self.rect.bottom, self.rect.left)
 
     def update(self, bullets):
         self.move()
 
-        if not self.playable:
+        if self.animation != ANIMATION_STATE.PLAYABLE:
             return
 
         if self.health <= 0:
             self.kill()
             return
-
-        pressed_keys = pygame.key.get_pressed()
 
         if self.control.shoot():
             self.shoot(bullets)
@@ -86,7 +86,7 @@ class Player(pygame.sprite.Sprite):
             self.explode()
 
     def die(self):
-        self.alive = False
+        self.health_state = HEALTH_STATE.DEAD
         # self.reset()
 
     def explode(self):
@@ -94,7 +94,7 @@ class Player(pygame.sprite.Sprite):
             self.explode_time = pygame.time.get_ticks()
 
     def is_alive(self):
-        return self.alive
+        return self.health_state == HEALTH_STATE.ALIVE
 
     def get_current_image(self):
         now = pygame.time.get_ticks()
@@ -116,9 +116,9 @@ class Player(pygame.sprite.Sprite):
         self.hitted = 0
         self.explode_time = 0
         self.health = PLAYER_HEALTH
-        self.playable = False
-        self.animated = False
+        self.animation = ANIMATION_STATE.IDLE
+
 
     def animate(self):
-        self.animated = True
+        self.animation = ANIMATION_STATE.ANIMATED
         self.rect = self.surf.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 1.1))

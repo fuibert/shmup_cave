@@ -1,3 +1,5 @@
+from enum import Enum
+
 SCREEN_WIDTH = 1080
 SCREEN_HEIGHT = 1920
 
@@ -33,3 +35,6 @@ HEARTH_IMAGE = 'coeur.png'
 
 SCORE_FONT = "Top_Secret_Stamp.ttf"
 SCORE_SIZE = 100
+
+HEALTH_STATE = Enum('health', [ 'ALIVE', 'HITTED', 'DEAD'])
+ANIMATION_STATE = Enum('status', ['IDLE', 'ANIMATED', 'PLAYABLE'])

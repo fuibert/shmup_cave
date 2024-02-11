@@ -161,8 +161,8 @@ class Game():
             for bullet in self.playerBullets:
                 bullet.kill()
             self.score_board[self.player.school].append(self.score)
-            self.store_score()
-            self.player.alive = True
+            #self.store_score()
+            self.player.health_state = HEALTH_STATE.ALIVE
             self.ended = True
             return
 
