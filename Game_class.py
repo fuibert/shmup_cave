@@ -19,7 +19,7 @@ class Game():
         pygame.joystick.init()
         self.joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
         if len(self.joysticks) > 1:
-            print("too many joysticks, plug onlly one. Bouffon va")
+            print("too many joysticks, plug only one. Bouffon va")
             exit
         self.clock = pygame.time.Clock()
         with open("score_board.json", "r") as f:

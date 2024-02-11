@@ -4,6 +4,7 @@ import pygame
 from const import *
 from Bullet_class import *
 import json
+import Utils_class as utils
 
 class Enemy(pygame.sprite.Sprite):
 
@@ -26,6 +27,8 @@ class Enemy(pygame.sprite.Sprite):
         self.speed.rotate_ip( -self.direction)
         self.image = pygame.transform.rotate(self.image_base, self.direction)
         self.image = pygame.transform.scale_by(self.image, 3)
+        self.hitted_image = utils.make_hitted_image(self.image)
+        self.hitted =0
 
         self.surf = pygame.Surface((52 * 3, 52 * 3))
         self.rect = self.surf.get_rect(center = (round(self.pos.x), round(self.pos.y)))
@@ -68,7 +71,7 @@ class Enemy(pygame.sprite.Sprite):
         self.shoot(bullets)
         
     def render(self, screen):
-        screen.blit(self.image, self.rect)
+        screen.blit(self.get_current_image(), self.rect)
 
     def shoot(self, bullets):
         now = pygame.time.get_ticks()
@@ -80,7 +83,16 @@ class Enemy(pygame.sprite.Sprite):
 
     def hit(self):
         self.health -= self.plane["dammage"]
+        self.hitted = pygame.time.get_ticks()
         if self.health <= 0:
             return self.points
         else:
             return 0
+
+    def get_current_image(self):
+        now = pygame.time.get_ticks()
+        if self.hitted != 0 and now - self.hitted < ENEMY_HITTED_DURATION:
+            return self.hitted_image
+        else:
+            self.hitted = 0
+            return self.image
