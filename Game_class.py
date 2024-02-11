@@ -39,6 +39,8 @@ class Game():
         self.font_small = pygame.font.SysFont("Verdana", 20)
         self.waiting_verre = [self.font.render("Placer un verre", True, BLACK),
                               self.font.render("pour demarrer", True, BLACK)]
+        #self.font_score = pygame.font.SysFont("Top Secret Stamp", 50)
+        self.font_score = pygame.font.Font("src/fonts/" + SCORE_FONT, SCORE_SIZE)
 
     def reset(self):
         self.running = False
@@ -98,8 +100,10 @@ class Game():
             bullet.render(self.screen)
 
         self.player.render_health_bar(self.screen)
-        self.display_score = self.font.render("SCORE: " + str(self.score), True, BLACK)
-        self.screen.blit(self.display_score, (SCREEN_WIDTH - self.display_score.get_rect().width, 20))
+        #self.display_score = self.font.render("SCORE: " + str(self.score), True, BLACK)
+        self.display_score = self.font_score.render("SCORE: " + str(self.score), True, BLACK)
+        #self.screen.blit(self.display_score, (SCREEN_WIDTH - self.display_score.get_rect().width, 20))
+        self.screen.blit(self.display_score, (SCREEN_WIDTH / 2, 20))
 
         self.player.render(self.screen)
         return
