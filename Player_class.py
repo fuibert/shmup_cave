@@ -2,6 +2,7 @@ import pygame
 from const import *
 from Bullet_class import *
 from Control_class import *
+from HealthBar_class import *
 import Utils_class as utils
 
 
@@ -20,9 +21,8 @@ class Player(pygame.sprite.Sprite):
         self.lastShoot = 0
         self.speed = PLAYER_SPEED
         self.health = PLAYER_HEALTH
-        self.hearth_image = pygame.image.load('textures/' + HEARTH_IMAGE)
-        self.hearth_image = pygame.transform.scale_by(self.hearth_image, 0.1)
-        self.health_rect = self.hearth_image.get_rect(center=(15, 15))
+
+        self.healthBar = HealthBar(self.rect.width)
 
         self.school = "CAVE"
 
@@ -42,6 +42,7 @@ class Player(pygame.sprite.Sprite):
 
     def render(self, screen):
         screen.blit(self.get_current_image(), self.rect)
+        self.healthBar.render(screen, self.rect.bottom, self.rect.left)
 
     def update(self, bullets):
         if self.health <= 0:
@@ -53,6 +54,8 @@ class Player(pygame.sprite.Sprite):
 
         if self.control.shoot():
             self.shoot(bullets)
+
+        self.healthBar.update(self.health / PLAYER_HEALTH)
 
     def shoot(self, bullets):
         now = pygame.time.get_ticks()
@@ -90,12 +93,6 @@ class Player(pygame.sprite.Sprite):
         else:
             self.hitted = 0
             return self.image
-
-    def render_health_bar(self, surface):
-        surface.blit(self.hearth_image, self.hearth_image.get_rect())
-        pygame.draw.rect(surface, (0, 0, 0), pygame.Rect(46, 6, PLAYER_HEALTH + 58, 27), 2)
-        bar_position = [50, 10, self.health + 50, 20]
-        pygame.draw.rect(surface, GREEN, bar_position)
 
     def reset(self):
         self.rect = self.surf.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.8))
