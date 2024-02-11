@@ -2,7 +2,7 @@ import pygame
 from const import *
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, X, Y, direction, path):
+    def __init__(self, X, Y, direction, path, damage):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("textures/bullets/" + path)
         self.image = pygame.transform.rotate(self.image, -direction)
@@ -14,6 +14,7 @@ class Bullet(pygame.sprite.Sprite):
         self.speed = pygame.math.Vector2( 0, BULLET_SPEED * SCREEN_HEIGHT)
         self.speed.rotate_ip(direction)
         self.pos = pygame.math.Vector2(X - self.rect.width / 2, Y - self.rect.height / 2)
+        self.damage = damage
 
     def move(self):
         self.pos = self.pos + self.speed / FPS

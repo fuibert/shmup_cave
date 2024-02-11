@@ -81,10 +81,10 @@ class Enemy(pygame.sprite.Sprite):
             self.lastShoot = now
             direct = pygame.math.Vector2(self.speed.normalize()) * self.rect.width / 2
             pos = pygame.math.Vector2(self.pos) + direct
-            bullets.add(Bullet(pos.x, pos.y, -self.direction, self.plane["bullet"]))
+            bullets.add(Bullet(pos.x, pos.y, -self.direction, self.plane["bullet"], self.plane["damage"]))
 
     def hit(self):
-        self.health -= self.plane["dammage"]
+        self.health -= BULLET_ATTACK
         self.hitted = pygame.time.get_ticks()
         if self.health <= 0:
             return self.points
