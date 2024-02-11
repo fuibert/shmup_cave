@@ -32,6 +32,8 @@ class Enemy(pygame.sprite.Sprite):
         self.explosion_images = utils.load_explosions_sprites()
         self.explode_time = 0
 
+        self.passed = False
+
         self.surf = pygame.Surface((52 * 3, 52 * 3))
         self.rect = self.surf.get_rect(center = (round(self.pos.x), round(self.pos.y)))
 
@@ -58,7 +60,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.center = (round(self.pos.x), round(self.pos.y))
         
         if self.rect.top > SCREEN_HEIGHT:
-            self.reset()
+            self.passed = True
         if self.rect.right < 0:
             self.reset()
         if self.rect.left > SCREEN_WIDTH:
@@ -81,10 +83,10 @@ class Enemy(pygame.sprite.Sprite):
             self.lastShoot = now
             direct = pygame.math.Vector2(self.speed.normalize()) * self.rect.width / 2
             pos = pygame.math.Vector2(self.pos) + direct
-            bullets.add(Bullet(pos.x, pos.y, -self.direction, self.plane["bullet"]))
+            bullets.add(Bullet(pos.x, pos.y, -self.direction, self.plane["bullet"], self.plane["damage"]))
 
     def hit(self):
-        self.health -= self.plane["dammage"]
+        self.health -= BULLET_ATTACK
         self.hitted = pygame.time.get_ticks()
         if self.health <= 0:
             return self.points

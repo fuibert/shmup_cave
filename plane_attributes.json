@@ -6,7 +6,7 @@
         "speed": 0.5,
         "health": 2,
         "cadence": 1200,
-        "dammage": 5,
+        "damage": 5,
         "score": 1
     },
     "avion2":
@@ -16,7 +16,7 @@
         "speed": 0.5,
         "health": 2,
         "cadence": 1200,
-        "dammage": 5,
+        "damage": 5,
         "score": 2
     },
     "avion3":
@@ -26,7 +26,7 @@
         "speed": 0.5,
         "health": 2,
         "cadence": 1200,
-        "dammage": 5,
+        "damage": 5,
         "score": 3
     },
     "avion4":
@@ -36,7 +36,7 @@
         "speed": 1,
         "health": 3,
         "cadence": 1200,
-        "dammage": 10,
+        "damage": 10,
         "score": 4
     },
     "avion5":
@@ -46,7 +46,7 @@
         "speed": 1.2,
         "health": 5,
         "cadence": 1500,
-        "dammage": 15,
+        "damage": 15,
         "score": 5
     },
     "avion6":
@@ -56,7 +56,7 @@
         "speed": 1.5,
         "health": 8,
         "cadence": 1200,
-        "dammage": 25,
+        "damage": 25,
         "score": 6
     },
     "avion7":
@@ -66,7 +66,7 @@
         "speed": 0.5,
         "health": 12,
         "cadence": 400,
-        "dammage": 45,
+        "damage": 45,
         "score": 7
     },
     "avion8":
@@ -76,7 +76,7 @@
         "speed": 1,
         "health": 3,
         "cadence": 1200,
-        "dammage": 10,
+        "damage": 10,
         "score": 8
     }
 }

@@ -132,7 +132,7 @@ class Game():
             self.player.render_health_bar(self.screen)
             
             for hit in pygame.sprite.spritecollide(self.player, self.enemyBullets, False):
-                self.player.hit()
+                self.player.hit(hit.damage)
                 hit.kill()
 
             if self.player.is_alive() and len(pygame.sprite.spritecollide(self.player, self.enemies, False)) > 0:
@@ -142,6 +142,9 @@ class Game():
                 for hit in pygame.sprite.spritecollide(enemy, self.playerBullets, False):
                     self.score += enemy.hit()
                     hit.kill()
+                if enemy.passed:
+                    self.player.hit(10)
+                    enemy.reset()
 
             if Game.apparition_rate <= datetime.datetime.now():
                 self.enemies.add(Enemy())
