@@ -58,6 +58,8 @@ class Game():
         self.enemyBullets = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
 
+        self.player.reset()
+
 
     def check_exit(self):
         if not pygame.get_init():
@@ -100,7 +102,6 @@ class Game():
 
         self.player.render_health_bar(self.screen)
         self.display_score = self.font_score.render("SCORE: " + str(self.score), True, BLACK)
-        #self.screen.blit(self.display_score, (SCREEN_WIDTH - self.display_score.get_rect().width, 20))
         self.screen.blit(self.display_score, ((SCREEN_WIDTH / 2) - (self.display_score.get_rect().width / 2), 20))
 
         self.player.render(self.screen)
@@ -131,11 +132,11 @@ class Game():
             self.player.render_health_bar(self.screen)
             
             for hit in pygame.sprite.spritecollide(self.player, self.enemyBullets, False):
-                self.ended = not self.player.hit()
+                self.player.hit()
                 hit.kill()
 
-            if not self.ended and len(pygame.sprite.spritecollide(self.player, self.enemies, False)) > 0:
-                self.ended = True
+            if self.player.is_alive() and len(pygame.sprite.spritecollide(self.player, self.enemies, False)) > 0:
+                self.player.explode()
 
             for enemy in self.enemies:
                 for hit in pygame.sprite.spritecollide(enemy, self.playerBullets, False):
@@ -149,7 +150,7 @@ class Game():
             if(len(self.enemies) == 0):
                 self.enemies.add(Enemy())
 
-        if self.ended:
+        if not self.player.is_alive():
             for enemy in self.enemies:
                 enemy.kill()
             for bullet in self.enemyBullets:
@@ -158,6 +159,8 @@ class Game():
                 bullet.kill()
             self.score_board[self.player.school].append(self.score)
             self.store_score()
+            self.player.alive = True
+            self.ended = True
             return
 
     def loop(self):

@@ -19,3 +19,9 @@ def make_hitted_image(image):
     redsurf = surf.copy()
     redsurf.blit(redshade, (0, 0))
     return redsurf
+
+def load_explosions_sprites():
+    images = []
+    for i in range(1, 7 + 1) :
+        images.append(pygame.image.load("textures/explosions/Explosion_" + str(i) + '.png'))
+    return images

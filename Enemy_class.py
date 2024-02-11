@@ -29,6 +29,8 @@ class Enemy(pygame.sprite.Sprite):
         self.image = pygame.transform.scale_by(self.image, 3)
         self.hitted_image = utils.make_hitted_image(self.image)
         self.hitted =0
+        self.explosion_images = utils.load_explosions_sprites()
+        self.explode_time = 0
 
         self.surf = pygame.Surface((52 * 3, 52 * 3))
         self.rect = self.surf.get_rect(center = (round(self.pos.x), round(self.pos.y)))
@@ -65,7 +67,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def update(self, bullets):
         if self.health <= 0:
-            self.kill()
+            self.explode()
             return
         self.move()
         self.shoot(bullets)
@@ -89,10 +91,23 @@ class Enemy(pygame.sprite.Sprite):
         else:
             return 0
 
+    def die(self):
+        self.kill()
+
+    def explode(self):
+        if self.explode_time == 0:
+            self.explode_time = pygame.time.get_ticks()
+
     def get_current_image(self):
         now = pygame.time.get_ticks()
         if self.hitted != 0 and now - self.hitted < ENEMY_HITTED_DURATION:
             return self.hitted_image
+        elif self.explode_time != 0:
+            explosion_step = round((now - self.explode_time) // 100)
+            if explosion_step >= (len(self.explosion_images) - 1) % ENEMY_EXPLODE_STEPS:
+                explosion_step = len(self.explosion_images) - 1
+                self.die()
+            return self.explosion_images[explosion_step]
         else:
             self.hitted = 0
             return self.image
