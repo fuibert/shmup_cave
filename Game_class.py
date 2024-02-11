@@ -136,6 +136,9 @@ class Game():
                 self.ended = not self.player.hit()
                 hit.kill()
 
+            if not self.ended and len(pygame.sprite.spritecollide(self.player, self.enemies, False)) > 0:
+                self.ended = True
+
             for enemy in self.enemies:
                 for hit in pygame.sprite.spritecollide(enemy, self.playerBullets, False):
                     self.score += enemy.hit()
