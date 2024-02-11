@@ -11,6 +11,7 @@ WHITE = (255, 255, 255)
 FPS = 120
 
 SHOOT_DELAY = 400
+
 BULLET_SPEED = 4000
 BULLET_ATTACK = 1
 
@@ -25,3 +26,6 @@ BACKGROUND_IMAGE = 'background_1.png' #'bg_1440x960.png'
 PLAYER_IMAGE = 'plane5.png'
 BULLET_IMAGE = 'bullet_1.png'
 HEARTH_IMAGE = 'coeur.png'
+
+SCORE_FONT = "Top_Secret_Stamp.ttf"
+SCORE_SIZE = 50
