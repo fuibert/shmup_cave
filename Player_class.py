@@ -28,9 +28,9 @@ class Player(pygame.sprite.Sprite):
                   self.rect.move_ip( -self.speed / FPS, 0)
         if self.rect.right < SCREEN_WIDTH and self.control.right():
                   self.rect.move_ip( self.speed / FPS, 0)
-        if self.rect.bottom > 0 and self.control.up():
+        if self.rect.top > 0 and self.control.up():
                 self.rect.move_ip(0, -self.speed / FPS)
-        if self.rect.top < SCREEN_HEIGHT and self.control.down():
+        if self.rect.bottom < SCREEN_HEIGHT and self.control.down():
                 self.rect.move_ip(0, self.speed / FPS)
 
     def render(self, screen):
