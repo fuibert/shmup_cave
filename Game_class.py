@@ -85,9 +85,10 @@ class Game():
 
     def render(self):
         self.background.render(self.screen)
+        
+        self.player.render(self.screen)
             
         if not self.running:
-            self.player.render(self.screen)
             self.display_waiting()
             return
 
@@ -113,9 +114,12 @@ class Game():
         if not self.running:
             if self.control.shoot():
                 self.running = True
+                self.player.animate()
 
         self.background.animate(self.running)
         self.background.update()
+
+        self.player.update(self.playerBullets)
 
         if self.running:
             for bullet in self.playerBullets:
@@ -126,8 +130,6 @@ class Game():
 
             for enemy in self.enemies:
                 enemy.update(self.enemyBullets)
-
-            self.player.update(self.playerBullets)
             
             for hit in pygame.sprite.spritecollide(self.player, self.enemyBullets, False):
                 self.player.hit(hit.damage)

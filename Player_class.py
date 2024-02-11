@@ -21,6 +21,8 @@ class Player(pygame.sprite.Sprite):
         self.lastShoot = 0
         self.speed = PLAYER_SPEED
         self.health = PLAYER_HEALTH
+        self.playable = False
+        self.animated = False
 
         self.healthBar = HealthBar(self.rect.width)
 
@@ -31,6 +33,15 @@ class Player(pygame.sprite.Sprite):
         self.control = Control(joystick)
 
     def move(self):
+        if self.animated:
+            self.rect.move_ip(0, -self.speed * 1.5 / FPS)
+            if (self.rect.center[1] <= SCREEN_HEIGHT * 0.8):
+                self.playable = True
+                self.animated = False
+            return
+
+
+
         if self.rect.left > 0 and self.control.left():
             self.rect.move_ip(-self.speed / FPS, 0)
         if self.rect.right < SCREEN_WIDTH and self.control.right():
@@ -42,13 +53,18 @@ class Player(pygame.sprite.Sprite):
 
     def render(self, screen):
         screen.blit(self.get_current_image(), self.rect)
-        self.healthBar.render(screen, self.rect.bottom, self.rect.left)
+        if self.playable:
+            self.healthBar.render(screen, self.rect.bottom, self.rect.left)
 
     def update(self, bullets):
+        self.move()
+
+        if not self.playable:
+            return
+
         if self.health <= 0:
             self.kill()
             return
-        self.move()
 
         pressed_keys = pygame.key.get_pressed()
 
@@ -100,3 +116,9 @@ class Player(pygame.sprite.Sprite):
         self.hitted = 0
         self.explode_time = 0
         self.health = PLAYER_HEALTH
+        self.playable = False
+        self.animated = False
+
+    def animate(self):
+        self.animated = True
+        self.rect = self.surf.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 1.1))
