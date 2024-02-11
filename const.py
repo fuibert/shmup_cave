@@ -27,4 +27,4 @@ BULLET_IMAGE = 'bullet_1.png'
 HEARTH_IMAGE = 'coeur.png'
 
 SCORE_FONT = "Top_Secret_Stamp.ttf"
-SCORE_SIZE = 50
+SCORE_SIZE = 100
