@@ -30,6 +30,8 @@ class Enemy(pygame.sprite.Sprite):
         self.hitted_image = utils.make_hitted_image(self.image)
         self.hitted =0
 
+        self.passed = False
+
         self.surf = pygame.Surface((52 * 3, 52 * 3))
         self.rect = self.surf.get_rect(center = (round(self.pos.x), round(self.pos.y)))
 
@@ -56,7 +58,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.center = (round(self.pos.x), round(self.pos.y))
         
         if self.rect.top > SCREEN_HEIGHT:
-            self.reset()
+            self.passed = True
         if self.rect.right < 0:
             self.reset()
         if self.rect.left > SCREEN_WIDTH:

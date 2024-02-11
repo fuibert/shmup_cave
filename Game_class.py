@@ -141,6 +141,9 @@ class Game():
                 for hit in pygame.sprite.spritecollide(enemy, self.playerBullets, False):
                     self.score += enemy.hit()
                     hit.kill()
+                if enemy.passed:
+                    self.player.hit()
+                    enemy.reset()
 
             if Game.apparition_rate <= datetime.datetime.now():
                 self.enemies.add(Enemy())
