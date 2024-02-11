@@ -5,7 +5,7 @@ from const import *
 class Background(pygame.sprite.Sprite):
     def __init__(self, width):
         pygame.sprite.Sprite.__init__(self)
-        self.bgimage = pygame.image.load('textures/' + BACKGROUND_IMAGE)
+        self.bgimage = pygame.image.load('textures/background/' + BACKGROUND_IMAGE)
         self.bgimage = pygame.transform.scale_by(self.bgimage, width/ self.bgimage.get_rect().width)
         self.rectBGimg = self.bgimage.get_rect()
         self.type = 0

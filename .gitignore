@@ -126,3 +126,6 @@ dmypy.json
 .vs/*
 *.sln
 textures/originaux/
+
+# PyCharm project settings
+.idea
