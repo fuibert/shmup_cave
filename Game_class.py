@@ -3,6 +3,7 @@ from const import *
 from Background_class import *
 from Player_class import *
 from Enemy_class import *
+from Bonus_class import *
 import datetime
 import json
 from Control_class import *
@@ -10,6 +11,7 @@ from Control_class import *
 class Game():
 
     apparition_rate = datetime.datetime.now() + datetime.timedelta(seconds=randint(0, 7))
+    apparition_rate_bonus = datetime.datetime.now() + datetime.timedelta(seconds=randint(0, 7))
 
     def __init__(self):
         super().__init__() 
@@ -57,6 +59,7 @@ class Game():
         self.playerBullets = pygame.sprite.Group()
         self.enemyBullets = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
+        self.bonus = pygame.sprite.Group()
 
         self.player.reset()
 
@@ -99,6 +102,9 @@ class Game():
 
         for bullet in self.enemyBullets:
             bullet.render(self.screen)
+
+        for bonus in self.bonus:
+            bonus.render(self.screen)
             
         self.display_score = self.font_score.render("SCORE: " + str(self.score), True, BLACK)
         self.screen.blit(self.display_score, ((SCREEN_WIDTH / 2) - (self.display_score.get_rect().width / 2), 20))
@@ -127,11 +133,18 @@ class Game():
             for enemy in self.enemies:
                 enemy.update(self.enemyBullets)
 
+            for bonus in self.bonus:
+                bonus.update()
+
             self.player.update(self.playerBullets)
             
             for hit in pygame.sprite.spritecollide(self.player, self.enemyBullets, False):
                 self.player.hit(hit.damage)
                 hit.kill()
+
+            for bonus in pygame.sprite.spritecollide(self.player, self.bonus, False):
+                self.player.add_bonus(bonus)
+                bonus.kill()
 
             if self.player.is_alive() and len(pygame.sprite.spritecollide(self.player, self.enemies, False)) > 0:
                 self.player.explode()
@@ -151,6 +164,10 @@ class Game():
             if(len(self.enemies) == 0):
                 self.enemies.add(Enemy())
 
+            if Game.apparition_rate_bonus <= datetime.datetime.now():
+                #self.bonus.add(Bonus())
+                Game.apparition_rate_bonus += datetime.timedelta(seconds=randint(0, 7))
+
         if not self.player.is_alive():
             for enemy in self.enemies:
                 enemy.kill()
@@ -158,6 +175,8 @@ class Game():
                 bullet.kill()
             for bullet in self.playerBullets:
                 bullet.kill()
+            for bonus in self.bonus:
+                bonus.kill()
             self.score_board[self.player.school].append(self.score)
             self.store_score()
             self.player.alive = True

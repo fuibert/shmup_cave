@@ -29,6 +29,9 @@ class Player(pygame.sprite.Sprite):
         self.max_length = 50
 
         self.control = Control(joystick)
+        self.bonus_time =0
+        self.bonus_image = utils.make_bonus_image(self.image)
+        self.shoot_delay = SHOOT_DELAY
 
     def move(self):
         if self.rect.left > 0 and self.control.left():
@@ -49,6 +52,7 @@ class Player(pygame.sprite.Sprite):
             self.kill()
             return
         self.move()
+        self.update_bonus()
 
         pressed_keys = pygame.key.get_pressed()
 
@@ -59,7 +63,7 @@ class Player(pygame.sprite.Sprite):
 
     def shoot(self, bullets):
         now = pygame.time.get_ticks()
-        if now - self.lastShoot > SHOOT_DELAY:
+        if now - self.lastShoot > self.shoot_delay:
             self.lastShoot = now
             bullets.add(Bullet(self.rect.left + self.rect.width / 2, self.rect.top, 180, BULLET_PLAYER, BULLET_ATTACK))
 
@@ -90,6 +94,8 @@ class Player(pygame.sprite.Sprite):
                 explosion_step = len(self.explosion_images) - 1
                 self.die()
             return self.explosion_images[explosion_step]
+        elif self.bonus_time != 0:
+            return self.bonus_images
         else:
             self.hitted = 0
             return self.image
@@ -100,3 +106,17 @@ class Player(pygame.sprite.Sprite):
         self.hitted = 0
         self.explode_time = 0
         self.health = PLAYER_HEALTH
+
+    def add_bonus(self, bonus):
+        if self.bonus_time == 0:
+            self.bonus_time = pygame.time.get_ticks()
+            self.shoot_delay = self.shoot_delay / bonus.attack_speed_modifier
+            self.speed = self.shoot_delay / bonus.plane_speed_modifier
+            self.health = self.health + bonus.healing
+            self.bonus_duration = bonus.duration
+
+    def update_bonus(self):
+        if self.bonus_time != 0 and pygame.time.get_ticks() - self.bonus_time < self.bonus_duration:
+            self.bonus_time = 0
+            self.shoot_delay = SHOOT_DELAY
+            self.speed = PLAYER_SPEED
