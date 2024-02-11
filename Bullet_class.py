@@ -2,9 +2,9 @@ import pygame
 from const import *
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, X, Y, direction):
+    def __init__(self, X, Y, direction, path):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("textures/" + BULLET_IMAGE)
+        self.image = pygame.image.load("textures/" + path)
         self.rect = self.image.get_rect()
         self.rect.update(
             (X - self.rect.width / 2, Y - self.rect.height / 2), 
