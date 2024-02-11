@@ -23,6 +23,7 @@ ENEMY_HITTED_DURATION = 100
 BACKGROUND_IMAGE = 'background_1.png' #'bg_1440x960.png'
 # BACKGROUND_IMAGE = 'bg_284x868.png'
 PLAYER_IMAGE = 'plane5.png'
+BULLET_PLAYER = 'bullet_4.png'
 BULLET_IMAGE = 'bullet_1.png'
 HEARTH_IMAGE = 'coeur.png'
 
