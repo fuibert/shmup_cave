@@ -14,7 +14,7 @@ class Background(pygame.sprite.Sprite):
         self.bgY1 = 0 
         self.bgY2 = -self.rectBGimg.height
 
-        self.movingUpSpeed = -3 * 60
+        self.movingUpSpeed = -3 * 60 *5
 
         self.animated = False
          
