@@ -79,7 +79,7 @@ class Enemy(pygame.sprite.Sprite):
             self.lastShoot = now
             direct = pygame.math.Vector2(self.speed.normalize()) * self.rect.width / 2
             pos = pygame.math.Vector2(self.pos) + direct
-            bullets.add(Bullet(pos.x, pos.y, -self.direction))
+            bullets.add(Bullet(pos.x, pos.y, -self.direction, self.plane["bullet"]))
 
     def hit(self):
         self.health -= self.plane["dammage"]

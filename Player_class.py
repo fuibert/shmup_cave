@@ -55,7 +55,7 @@ class Player(pygame.sprite.Sprite):
         now = pygame.time.get_ticks()
         if now - self.lastShoot > SHOOT_DELAY:
             self.lastShoot = now
-            bullets.add(Bullet(self.rect.left + self.rect.width / 2, self.rect.top, 180))
+            bullets.add(Bullet(self.rect.left + self.rect.width / 2, self.rect.top, 180, BULLET_PLAYER))
 
     def hit(self):
         self.health -= BULLET_ATTACK

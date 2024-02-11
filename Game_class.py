@@ -98,12 +98,12 @@ class Game():
         for bullet in self.enemyBullets:
             bullet.render(self.screen)
 
-        self.player.render(self.screen)
         self.player.render_health_bar(self.screen)
         self.display_score = self.font_score.render("SCORE: " + str(self.score), True, BLACK)
         #self.screen.blit(self.display_score, (SCREEN_WIDTH - self.display_score.get_rect().width, 20))
         self.screen.blit(self.display_score, ((SCREEN_WIDTH / 2) - (self.display_score.get_rect().width / 2), 20))
 
+        self.player.render(self.screen)
         return
 
     def exit_requested(self):
