@@ -4,7 +4,7 @@ from const import *
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, X, Y, direction):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("textures/" + BULLET_IMAGE)
+        self.image = pygame.image.load("textures/bullets" + BULLET_IMAGE)
         self.rect = self.image.get_rect()
         self.rect.update(
             (X - self.rect.width / 2, Y - self.rect.height / 2), 

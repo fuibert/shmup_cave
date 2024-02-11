@@ -18,7 +18,7 @@ class Enemy(pygame.sprite.Sprite):
         self.type = randint( 1, len(Enemy.planes) - 1)
         self.plane = Enemy.planes['avion'+str(self.type)]
         self.image_base = pygame.transform.rotate(
-            pygame.image.load("textures/" + self.plane["sprite"]), 180.0)
+            pygame.image.load("textures/planes/" + self.plane["sprite"]), 180.0)
         self.start_position = randrange(0, SCREEN_WIDTH)
         self.pos = pygame.math.Vector2(self.start_position, -10)
         self.speed = pygame.math.Vector2( 0, self.plane["speed"] * SCREEN_HEIGHT)
