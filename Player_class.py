@@ -32,14 +32,20 @@ class Player(pygame.sprite.Sprite):
 
         self.control = Control(joystick)
 
+        self.arrows = []
+        arrow = pygame.transform.scale_by(pygame.image.load("textures/arrow.png"), 1)
+
+        self.tuto_time = 0
+
+        for i in range(4):
+            self.arrows.append(pygame.transform.rotate(arrow, i * 90))
+
     def move(self):
         if self.animation == ANIMATION_STATE.IDLE:
             return
 
         if self.animation == ANIMATION_STATE.ANIMATED:
             self.rect.move_ip(0, -self.speed * 1.5 / FPS)
-            if (self.rect.center[1] <= SCREEN_HEIGHT * 0.8):
-                self.animation = ANIMATION_STATE.PLAYABLE
             return
 
 
@@ -58,18 +64,36 @@ class Player(pygame.sprite.Sprite):
         if self.animation == ANIMATION_STATE.PLAYABLE:
             self.healthBar.render(screen, self.rect.bottom, self.rect.left)
 
+        if self.animation == ANIMATION_STATE.TUTO:
+            if pygame.time.get_ticks() % 500 < 250:
+                offset = pygame.math.Vector2(self.rect.width * 0.8, 0)
+                for i in range(4):
+                    arrow = self.arrows[i].get_rect(center = (self.rect.center + offset))
+                    screen.blit(self.arrows[i], arrow)
+                    offset.rotate_ip( -90)
+
+
     def update(self, bullets):
         self.move()
 
-        if self.animation != ANIMATION_STATE.PLAYABLE:
+        if self.animation == ANIMATION_STATE.ANIMATED and self.rect.center[1] <= SCREEN_HEIGHT * 0.8:
+            self.animation = ANIMATION_STATE.TUTO
+            self.tuto_time = pygame.time.get_ticks()
+            return
+
+        if self.animation == ANIMATION_STATE.TUTO:
+            if pygame.time.get_ticks() - self.tuto_time > TUTO_DURATION:
+                self.animation = ANIMATION_STATE.PLAYABLE
+
+        if self.control.shoot():
+            self.shoot(bullets)
+
+        if self.animation == ANIMATION_STATE.PLAYABLE:
             return
 
         if self.health <= 0:
             self.kill()
             return
-
-        if self.control.shoot():
-            self.shoot(bullets)
 
         self.healthBar.update(self.health / PLAYER_HEALTH)
 
@@ -117,6 +141,7 @@ class Player(pygame.sprite.Sprite):
         self.explode_time = 0
         self.health = PLAYER_HEALTH
         self.animation = ANIMATION_STATE.IDLE
+        self.tuto_time = 0
 
 
     def animate(self):
