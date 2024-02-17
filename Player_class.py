@@ -1,34 +1,17 @@
 import pygame
+from Control_class import Control
+from HealthBar_class import HealthBar
+from Plane_class import Plane
 from const import *
-from Bullet_class import *
-from Control_class import *
-from HealthBar_class import *
-import Utils_class as utils
 
-
-class Player(pygame.sprite.Sprite):
-    def __init__(self, joystick):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("textures/planes/" + PLAYER_IMAGE)
-        self.image = pygame.transform.scale_by(self.image, 3)
-        self.hitted_image = utils.make_hitted_image(self.image)
-        self.hitted = 0
-        self.explosion_images = utils.load_explosions_sprites()
-        self.explode_time = 0
-        self.surf = pygame.Surface((52 * 3, 52 * 3))
-        self.rect = self.surf.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.8))
-        self.lastShoot = 0
-        self.speed = PLAYER_SPEED
-        self.health = PLAYER_HEALTH
-        
-        self.healthBar = HealthBar(self.rect.width)
-
-        self.health_state = HEALTH_STATE.ALIVE
+class Player(Plane):
+    def __init__(self, attributes, joystick):               
         self.animation = ANIMATION_STATE.IDLE
 
         self.school = "CAVE"
 
-        self.max_length = 50
+        #self.max_length = 50
+        self.lin_speed = attributes["speed"]        
 
         self.control = Control(joystick)
         self.bonus_time =0
@@ -43,27 +26,24 @@ class Player(pygame.sprite.Sprite):
         for i in range(4):
             self.arrows.append(pygame.transform.rotate(arrow, i * 90))
 
+        super().__init__(attributes, pygame.math.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.8), 0, 0) 
+        self.max_health = attributes["health"]        
+        self.healthBar = HealthBar(self.rect.width)           
+
     def move(self):
         if self.animation == ANIMATION_STATE.IDLE:
-            return
+            self.speed = pygame.math.Vector2(0, 0)
 
-        if self.animation == ANIMATION_STATE.ANIMATED:
-            self.rect.move_ip(0, -self.speed * 1.5 / FPS)
-            return
+        elif self.animation == ANIMATION_STATE.ANIMATED:
+            self.speed = pygame.math.Vector2(0, -self.lin_speed * 1.5 * SCREEN_HEIGHT)
+          
+        else:
+            self.speed = pygame.math.Vector2(self.control.direction()) * self.lin_speed * SCREEN_HEIGHT
+            
+        super().move()        
 
-
-
-        if self.rect.left > 0 and self.control.left():
-            self.rect.move_ip(-self.speed / FPS, 0)
-        if self.rect.right < SCREEN_WIDTH and self.control.right():
-            self.rect.move_ip(self.speed / FPS, 0)
-        if self.rect.top > 0 and self.control.up():
-            self.rect.move_ip(0, -self.speed / FPS)
-        if self.rect.bottom < SCREEN_HEIGHT and self.control.down():
-            self.rect.move_ip(0, self.speed / FPS)
-
-    def render(self, screen):
-        screen.blit(self.get_current_image(), self.rect)
+    def blit(self, screen):
+        super().blit(screen)
         if self.animation == ANIMATION_STATE.PLAYABLE:
             self.healthBar.render(screen, self.rect.bottom, self.rect.left)
 
@@ -77,9 +57,6 @@ class Player(pygame.sprite.Sprite):
 
 
     def update(self, bullets):
-        self.move()
-        self.update_bonus()
-
         if self.animation == ANIMATION_STATE.ANIMATED and self.rect.center[1] <= SCREEN_HEIGHT * 0.8:
             self.animation = ANIMATION_STATE.TUTO
             self.tuto_time = pygame.time.get_ticks()
@@ -90,64 +67,11 @@ class Player(pygame.sprite.Sprite):
                 self.animation = ANIMATION_STATE.PLAYABLE
 
         if self.control.shoot():
-            self.shoot(bullets)
+            super().shoot(bullets)
 
-        if self.animation == ANIMATION_STATE.PLAYABLE:
-            return
+        super().update()            
 
-        if self.health <= 0:
-            self.kill()
-            return
-
-        self.healthBar.update(self.health / PLAYER_HEALTH)
-
-    def shoot(self, bullets):
-        now = pygame.time.get_ticks()
-        if now - self.lastShoot > self.shoot_delay:
-            self.lastShoot = now
-            bullets.add(Bullet(self.rect.left + self.rect.width / 2, self.rect.top, 180, BULLET_PLAYER, BULLET_ATTACK))
-
-    def hit(self, dammage):
-        self.health -= dammage
-        self.hitted = pygame.time.get_ticks()
-        if self.health <= 0:
-            self.explode()
-
-    def die(self):
-        self.health_state = HEALTH_STATE.DEAD
-        # self.reset()
-
-    def explode(self):
-        if self.explode_time == 0:
-            self.explode_time = pygame.time.get_ticks()
-
-    def is_alive(self):
-        return self.health_state == HEALTH_STATE.ALIVE
-
-    def get_current_image(self):
-        now = pygame.time.get_ticks()
-        if self.hitted != 0 and now - self.hitted < PLAYER_HITTED_DURATION:
-            return self.hitted_image
-        elif self.explode_time !=0 :
-            explosion_step = round((now - self.explode_time) // 100)
-            if explosion_step >= (len(self.explosion_images) - 1) % PLAYER_EXPLODE_STEPS:
-                explosion_step = len(self.explosion_images) - 1
-                self.die()
-            return self.explosion_images[explosion_step]
-        elif self.bonus_time != 0:
-            return self.bonus_images
-        else:
-            self.hitted = 0
-            return self.image
-
-    def reset(self):
-        self.rect = self.surf.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.8))
-        self.lastShoot = 0
-        self.hitted = 0
-        self.explode_time = 0
-        self.health = PLAYER_HEALTH
-        self.animation = ANIMATION_STATE.IDLE
-        self.tuto_time = 0
+        self.healthBar.update(self.health / self.max_health)
 
     def add_bonus(self, bonus):
         if self.bonus_time == 0:
@@ -165,5 +89,5 @@ class Player(pygame.sprite.Sprite):
 
     def animate(self):
         self.animation = ANIMATION_STATE.ANIMATED
-        self.rect = self.surf.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 1.1))
+        self.rect = self.image.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 1.1))
 

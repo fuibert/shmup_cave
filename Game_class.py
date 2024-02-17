@@ -1,4 +1,6 @@
+import random
 import pygame
+from Explosion_class import Explosion
 from const import *
 from Background_class import *
 from Player_class import *
@@ -24,6 +26,12 @@ class Game():
             print("too many joysticks, plug only one. Bouffon va")
             exit
         self.clock = pygame.time.Clock()
+
+        with open("plane_attributes.json", "r") as f:
+            data = json.loads(f.read())
+            self.playerAttributes = data["player"]
+            self.enemiesAttributes = data["enemies"]
+        
         with open("score_board.json", "r") as f:
             self.score_board = json.loads(f.read())
         self.reset()
@@ -49,20 +57,20 @@ class Game():
         self.ended = False
 
         if len(self.joysticks) > 0:
-            self.player = Player(self.joysticks[0])
+            self.player = Player(self.playerAttributes,self.joysticks[0])
             self.control = Control(self.joysticks[0])
         else:
-            self.player = Player(None)
+            self.player = Player(self.playerAttributes,None)
             self.control = Control(None)
-        SCREEN_WIDTH, SCREEN_HEIGHT = pygame.display.get_window_size()
+            
+        SCREEN_WIDTH, SCREEN_HEIGHT = self.screen.get_size()
+        
         self.background = Background(SCREEN_WIDTH)
         self.playerBullets = pygame.sprite.Group()
         self.enemyBullets = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
         self.bonus = pygame.sprite.Group()
-
-        self.player.reset()
-
+        self.explosions = pygame.sprite.Group()
 
     def check_exit(self):
         if not pygame.get_init():
@@ -89,20 +97,20 @@ class Game():
     def render(self):
         self.background.render(self.screen)
         
-        self.player.render(self.screen)
+        self.player.blit(self.screen)
             
         if not self.running:
             self.display_waiting()
             return
 
         for enemy in self.enemies:
-            enemy.render(self.screen)
+            enemy.blit(self.screen)
 
-        for bullet in self.playerBullets:
-            bullet.render(self.screen)
+        self.playerBullets.draw(self.screen)
 
-        for bullet in self.enemyBullets:
-            bullet.render(self.screen)
+        self.enemyBullets.draw(self.screen)
+
+        self.explosions.draw(self.screen)
 
         for bonus in self.bonus:
             bonus.render(self.screen)
@@ -110,7 +118,7 @@ class Game():
         self.display_score = self.font_score.render("SCORE: " + str(self.score), True, BLACK)
         self.screen.blit(self.display_score, ((SCREEN_WIDTH / 2) - (self.display_score.get_rect().width / 2), 20))
 
-        self.player.render(self.screen)
+        self.player.blit(self.screen)
         return
 
     def exit_requested(self):
@@ -128,51 +136,49 @@ class Game():
         self.player.update(self.playerBullets)
 
         if self.running:
-            for bullet in self.playerBullets:
-                bullet.update()
+            self.playerBullets.update()
 
-            for bullet in self.enemyBullets:
-                bullet.update()
+            self.enemyBullets.update()
 
-            for enemy in self.enemies:
-                enemy.update(self.enemyBullets)
+            self.explosions.update()
+
+            self.enemies.update(self.enemyBullets)
 
             for bonus in self.bonus:
                 bonus.update()
-
-            self.player.update(self.playerBullets)
-
-            for hit in pygame.sprite.spritecollide(self.player, self.enemyBullets, False):
-                self.player.hit(hit.damage)
-                hit.kill()
+            for hit in pygame.sprite.spritecollide(self.player, self.enemyBullets, False, pygame.sprite.collide_mask):
+                self.player.hit(hit)
 
             for bonus in pygame.sprite.spritecollide(self.player, self.bonus, False):
                 self.player.add_bonus(bonus)
                 bonus.kill()
 
-            if self.player.is_alive() and len(pygame.sprite.spritecollide(self.player, self.enemies, False)) > 0:
-                self.player.explode()
+            if not self.player.is_dead() and len(pygame.sprite.spritecollide(self.player, self.enemies, False, pygame.sprite.collide_mask)) > 0:
+                self.explosions.add(Explosion(self.player.pos))
+                self.player.kill()
 
             for enemy in self.enemies:
-                for hit in pygame.sprite.spritecollide(enemy, self.playerBullets, False):
-                    self.score += enemy.hit()
-                    hit.kill()
-                if enemy.passed:
-                    self.player.hit(10)
-                    enemy.reset()
+                for hit in pygame.sprite.spritecollide(enemy, self.playerBullets, False,  pygame.sprite.collide_mask):
+                    enemy.hit(hit)
+                if enemy.passed():
+                    self.player.receive_damage(10)
+                    enemy.kill()
+                if enemy.is_dead():
+                    self.explosions.add(Explosion(enemy.pos))
+                    enemy.kill()                                        
 
-            if Game.apparition_rate <= datetime.datetime.now():
-                self.enemies.add(Enemy())
-                Game.apparition_rate += datetime.timedelta(seconds=randint(0, 7))
+ #           if Game.apparition_rate <= datetime.datetime.now():
+ #               self.enemies.add(Enemy(random.choice(list(self.enemiesAttributes.values()))))
+ #               Game.apparition_rate += datetime.timedelta(seconds=randint(0, 7))
 
             if(len(self.enemies) == 0):
-                self.enemies.add(Enemy())
+                self.enemies.add(Enemy(random.choice(list(self.enemiesAttributes.values()))))
 
             if Game.apparition_rate_bonus <= datetime.datetime.now():
                 #self.bonus.add(Bonus())
                 Game.apparition_rate_bonus += datetime.timedelta(seconds=randint(0, 7))
 
-        if not self.player.is_alive():
+        if self.player.is_dead():
             for enemy in self.enemies:
                 enemy.kill()
             for bullet in self.enemyBullets:

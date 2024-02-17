@@ -31,5 +31,18 @@ class Control():
         pressed_keys = pygame.key.get_pressed()
         return pressed_keys[K_ESCAPE]
 
+    def direction(self):
+        if self.joystick != None:
+            return (self.joystick.get_axis(0), self.joystick.get_axis(1)) 
 
-
+        pressed_keys = pygame.key.get_pressed()
+        dir_ = [0,0]
+        if pressed_keys[K_LEFT]:
+            dir_[0] -= 1  
+        if pressed_keys[K_RIGHT]:
+            dir_[0] += 1  
+        if pressed_keys[K_UP]:
+            dir_[1] -= 1  
+        if pressed_keys[K_DOWN]:
+            dir_[1] += 1  
+        return dir_                      

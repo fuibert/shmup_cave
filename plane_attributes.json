@@ -1,82 +1,93 @@
 {
-	 "avion1":
-    {
-        "sprite": "plane1.png",
-        "bullet": "bullet_1.png",
-        "speed": 0.5,
-        "health": 2,
-        "cadence": 1200,
-        "damage": 5,
-        "score": 1
-    },
-    "avion2":
-    {
-        "sprite": "plane2.png",
-        "bullet": "bullet_1.png",
-        "speed": 0.5,
-        "health": 2,
-        "cadence": 1200,
-        "damage": 5,
-        "score": 2
-    },
-    "avion3":
-    {
-        "sprite": "plane3.png",
-        "bullet": "bullet_1.png",
-        "speed": 0.5,
-        "health": 2,
-        "cadence": 1200,
-        "damage": 5,
-        "score": 3
-    },
-    "avion4":
-    {
-        "sprite": "plane4.png",
+    "player": {
+        "sprite": "plane5.png",
+        "size": 0.15,
         "bullet": "bullet_4.png",
-        "speed": 1,
-        "health": 3,
-        "cadence": 1200,
-        "damage": 10,
-        "score": 4
-    },
-    "avion5":
-    {
-        "sprite": "plane6.png",
-        "bullet": "bullet_4.png",
-        "speed": 1.2,
-        "health": 5,
-        "cadence": 1500,
-        "damage": 15,
-        "score": 5
-    },
-    "avion6":
-    {
-        "sprite": "plane7.png",
-        "bullet": "bullet_5.png",
-        "speed": 1.5,
-        "health": 8,
-        "cadence": 1200,
-        "damage": 25,
-        "score": 6
-    },
-    "avion7":
-    {
-        "sprite": "plane8.png",
-        "bullet": "bullet_5.png",
-        "speed": 0.5,
-        "health": 12,
+        "health": 1000,
         "cadence": 400,
-        "damage": 45,
-        "score": 7
+        "speed": 1.5,
+        "damage": 1
     },
-    "avion8":
-    {
-        "sprite": "plane9.png",
-        "bullet": "bullet_3.png",
-        "speed": 1,
-        "health": 3,
-        "cadence": 1200,
-        "damage": 10,
-        "score": 8
+    "enemies": {
+        "avion1": {
+            "sprite": "plane1.png",
+            "size": 0.1,
+            "bullet": "bullet_1.png",
+            "speed": 0.5,
+            "health": 2,
+            "cadence": 1200,
+            "damage": 5,
+            "score": 1
+        },
+        "avion2": {
+            "sprite": "plane2.png",
+            "size": 0.1,
+            "bullet": "bullet_1.png",
+            "speed": 0.5,
+            "health": 2,
+            "cadence": 1200,
+            "damage": 5,
+            "score": 2
+        },
+        "avion3": {
+            "sprite": "plane3.png",
+            "size": 0.1,
+            "bullet": "bullet_1.png",
+            "speed": 0.5,
+            "health": 2,
+            "cadence": 1200,
+            "damage": 5,
+            "score": 3
+        },
+        "avion4": {
+            "sprite": "plane4.png",
+            "size": 0.1,
+            "bullet": "bullet_4.png",
+            "speed": 1,
+            "health": 3,
+            "cadence": 1200,
+            "damage": 10,
+            "score": 4
+        },
+        "avion5": {
+            "sprite": "plane6.png",
+            "size": 0.1,
+            "bullet": "bullet_4.png",
+            "speed": 1.2,
+            "health": 5,
+            "cadence": 1500,
+            "damage": 15,
+            "score": 5
+        },
+        "avion6": {
+            "sprite": "plane7.png",
+            "size": 0.1,
+            "bullet": "bullet_5.png",
+            "speed": 1.5,
+            "health": 8,
+            "cadence": 1200,
+            "damage": 25,
+            "score": 6
+        },
+        "avion7": {
+            "sprite": "plane8.png",
+            "size": 0.1,
+            "bullet": "bullet_5.png",
+            "speed": 0.5,
+            "health": 12,
+            "cadence": 400,
+            "damage": 45,
+            "score": 7
+        },
+        "avion8": {
+            "sprite": "plane9.png",
+            "size": 0.1,
+            "bullet": "bullet_3.png",
+            "speed": 1,
+            "health": 3,
+            "cadence": 1200,
+            "damage": 10,
+            "score": 8
+        }
     }
 }
