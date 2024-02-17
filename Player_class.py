@@ -69,7 +69,8 @@ class Player(Plane):
         if self.control.shoot():
             super().shoot(bullets)
 
-        super().update()            
+        super().update()
+        self.limit_to_bounds()   
 
         self.healthBar.update(self.health / self.max_health)
 
@@ -91,3 +92,12 @@ class Player(Plane):
         self.animation = ANIMATION_STATE.ANIMATED
         self.rect = self.image.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 1.1))
 
+    def limit_to_bounds(self):
+        if self.rect.left < 0:
+            self.rect.left = 0
+        if self.rect.right > SCREEN_WIDTH:
+            self.rect.right = SCREEN_WIDTH
+        if self.rect.top < 0:
+            self.rect.top = 0
+        if self.rect.bottom > SCREEN_HEIGHT:
+            self.rect.bottom = SCREEN_HEIGHT
