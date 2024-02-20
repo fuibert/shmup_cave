@@ -1,8 +1,8 @@
 import pygame
-from Moving_elt_class import Moving_elt
+from Moving_elt_class import MovingElement
 from const import *
 
-class Bullet(Moving_elt):
+class Bullet(MovingElement):
     def __init__(self, pos, direction, path, damage):
         self.damage = damage
         super().__init__(

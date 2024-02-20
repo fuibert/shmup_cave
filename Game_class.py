@@ -1,19 +1,19 @@
-import random
-import pygame
-from Explosion_class import Explosion
-from const import *
-from Background_class import *
-from Player_class import *
-from Enemy_class import *
-from Bonus_class import *
 import datetime
 import json
-from Control_class import *
+import random
+import pygame
+from Background_class import Background
+from Bonus_class import Bonus
+from Control_class import Control
+from Enemy_class import Enemy
+from Explosion_class import Explosion
+from Player_class import Player
+from const import BLACK, FPS, HEALTH_STATE, SCORE_FONT, SCORE_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH
 
 class Game():
 
-    apparition_rate = datetime.datetime.now() + datetime.timedelta(seconds=randint(0, 7))
-    apparition_rate_bonus = datetime.datetime.now() + datetime.timedelta(seconds=randint(0, 7))
+    apparition_rate = datetime.datetime.now() + datetime.timedelta(seconds=random.randint(0, 7))
+    apparition_rate_bonus = datetime.datetime.now() + datetime.timedelta(seconds=random.randint(0, 7))
 
     def __init__(self):
         super().__init__() 
@@ -27,10 +27,11 @@ class Game():
             exit()
         self.clock = pygame.time.Clock()
 
-        with open("plane_attributes.json", "r") as f:
+        with open("attributes.json", "r") as f:
             data = json.loads(f.read())
             self.playerAttributes = data["player"]
             self.enemiesAttributes = data["enemies"]
+            self.bonusAttributes = data["bonus"]   
         
         with open("score_board.json", "r") as f:
             self.score_board = json.loads(f.read())
@@ -112,8 +113,7 @@ class Game():
 
         self.explosions.draw(self.screen)
 
-        for bonus in self.bonus:
-            bonus.render(self.screen)
+        self.bonus.draw(self.screen)
             
         self.display_score = self.font_score.render("SCORE: " + str(self.score), True, BLACK)
         self.screen.blit(self.display_score, ((SCREEN_WIDTH / 2) - (self.display_score.get_rect().width / 2), 20))
@@ -175,8 +175,9 @@ class Game():
                 self.enemies.add(Enemy(random.choice(list(self.enemiesAttributes.values()))))
 
             if Game.apparition_rate_bonus <= datetime.datetime.now():
-                #self.bonus.add(Bonus())
-                Game.apparition_rate_bonus += datetime.timedelta(seconds=randint(0, 7))
+                bonus = random.choices(list(self.bonusAttributes.values()), [val["weight"] for val in self.bonusAttributes.values()], k=1)[0]                
+                self.bonus.add(Bonus(bonus))
+                Game.apparition_rate_bonus += datetime.timedelta(seconds=random.randint(0, 7))
 
         if self.player.is_dead():
             for enemy in self.enemies:
