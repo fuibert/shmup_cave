@@ -95,14 +95,14 @@ class Player(Plane):
         self.rect = self.image.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 1.1))
 
     def limit_to_bounds(self):
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.right > SCREEN_WIDTH:
-            self.rect.right = SCREEN_WIDTH
-        if self.rect.top < 0:
-            self.rect.top = 0
-        if self.rect.bottom > SCREEN_HEIGHT:
-            self.rect.bottom = SCREEN_HEIGHT
+        if self.pos.x < 0:
+            self.pos.x = 0
+        if self.pos.x > SCREEN_WIDTH:
+            self.pos.x = SCREEN_WIDTH
+        if self.pos.y < 0:
+            self.pos.y = 0
+        if self.pos.y > SCREEN_HEIGHT:
+            self.pos.y = SCREEN_HEIGHT
 
     def kill(self):
         self.health_state = HEALTH_STATE.DEAD
