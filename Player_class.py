@@ -1,3 +1,4 @@
+from numpy import minimum
 import pygame
 from Control_class import Control
 from HealthBar_class import HealthBar
@@ -11,11 +12,12 @@ class Player(Plane):
         self.school = "CAVE"
 
         #self.max_length = 50
-        self.lin_speed = attributes["speed"]        
+        self.lin_speed_def = attributes["speed"] 
+        self.lin_speed = self.lin_speed_def       
 
         self.control = Control(joystick)
         self.bonus_time =0
-        self.bonus_image = utils.make_bonus_image(self.image)
+        #self.bonus_image = utils.make_bonus_image(self.image)
         self.shoot_delay = SHOOT_DELAY
 
         self.arrows = []
@@ -77,16 +79,16 @@ class Player(Plane):
     def add_bonus(self, bonus):
         if self.bonus_time == 0:
             self.bonus_time = pygame.time.get_ticks()
-            self.shoot_delay = self.shoot_delay / bonus.attack_speed_modifier
-            self.speed = self.shoot_delay / bonus.plane_speed_modifier
-            self.health = self.health + bonus.healing
-            self.bonus_duration = bonus.duration
+            self.shoot_delay = self.shoot_delay / bonus.effect["attack_speed_modifier"]
+            self.lin_speed = self.lin_speed * bonus.effect["plane_speed_modifier"]
+            self.health = minimum(self.health + bonus.effect["healing"], self.max_health)
+            self.bonus_duration = bonus.effect["duration"]
 
     def update_bonus(self):
         if self.bonus_time != 0 and pygame.time.get_ticks() - self.bonus_time < self.bonus_duration:
             self.bonus_time = 0
             self.shoot_delay = SHOOT_DELAY
-            self.speed = PLAYER_SPEED
+            self.lin_speed = self.lin_speed_def
 
     def animate(self):
         self.animation = ANIMATION_STATE.ANIMATED
