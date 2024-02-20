@@ -149,7 +149,7 @@ class Game():
             for hit in pygame.sprite.spritecollide(self.player, self.enemyBullets, False, pygame.sprite.collide_mask):
                 self.player.hit(hit)
 
-            for bonus in pygame.sprite.spritecollide(self.player, self.bonus, False):
+            for bonus in pygame.sprite.spritecollide(self.player, self.bonus, False, pygame.sprite.collide_mask):
                 self.player.add_bonus(bonus)
                 bonus.kill()
 
