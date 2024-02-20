@@ -24,7 +24,7 @@ class Game():
         self.joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
         if len(self.joysticks) > 1:
             print("too many joysticks, plug only one. Bouffon va")
-            exit
+            exit()
         self.clock = pygame.time.Clock()
 
         with open("plane_attributes.json", "r") as f:

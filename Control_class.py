@@ -1,5 +1,5 @@
 import pygame
-from pygame.locals import *
+from pygame.locals import K_DOWN, K_ESCAPE, K_LEFT, K_RIGHT, K_SPACE, K_UP
 
 SENSIBILITY = 0.1
 

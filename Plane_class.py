@@ -1,8 +1,9 @@
-from Moving_elt_class import Moving_elt
+import pygame
+from Moving_elt_class import MovingElement
 from const import *
-from Bullet_class import *
+from Bullet_class import Bullet
 
-class Plane(Moving_elt):
+class Plane(MovingElement):
     def __init__(self, attributes, pos, angle, speed):
         self.lastShoot = 0
         self.cadence = attributes["cadence"]

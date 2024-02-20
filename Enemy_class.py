@@ -3,7 +3,7 @@ from random import randint, randrange
 import pygame
 from Bullet_class import Bullet
 from Plane_class import Plane
-from const import *
+from const import SCREEN_HEIGHT, SCREEN_WIDTH
 
 class Enemy(Plane):
     def __init__(self, attributes):

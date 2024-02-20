@@ -1,6 +1,5 @@
 import pygame
 
-
 class Explosion(pygame.sprite.Sprite):
     def __init__(self, pos):
         self.images = []

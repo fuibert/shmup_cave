@@ -1,7 +1,7 @@
-from Drawable_elt_class import Drawable_elt
-from const import *
+from Drawable_elt_class import DrawableElement
+from const import SCREEN_WIDTH,SCREEN_HEIGHT,FPS
 
-class Moving_elt(Drawable_elt):
+class MovingElement(DrawableElement):
     def __init__(self, image_path, size, pos, angle, speed):
         self.speed = speed
         super().__init__(image_path, size, angle, pos)  

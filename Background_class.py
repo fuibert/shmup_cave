@@ -1,5 +1,5 @@
 import pygame
-from pygame.locals import *
+from pygame.locals import K_1,K_2,K_3,K_4,K_5
 from const import *
 
 class Background(pygame.sprite.Sprite):

@@ -1,8 +1,7 @@
 import pygame
-
 from const import SCREEN_WIDTH
 
-class Drawable_elt(pygame.sprite.Sprite):
+class DrawableElement(pygame.sprite.Sprite):
     def __init__(self, image_path, width, angle, pos):
         self.set_image("textures/" + image_path, angle, width)
         self.pos = pos
