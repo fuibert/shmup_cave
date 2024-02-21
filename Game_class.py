@@ -165,7 +165,8 @@ class Game():
                     enemy.kill()
                 if enemy.is_dead():
                     self.explosions.add(Explosion(enemy.pos))
-                    enemy.kill()                                        
+                    enemy.kill()
+                    self.score += enemy.points                                                          
 
  #           if Game.apparition_rate <= datetime.datetime.now():
  #               self.enemies.add(Enemy(random.choice(list(self.enemiesAttributes.values()))))
