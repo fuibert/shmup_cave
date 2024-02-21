@@ -146,19 +146,19 @@ class Game():
 
             for bonus in self.bonus:
                 bonus.update()
-            for hit in pygame.sprite.spritecollide(self.player, self.enemyBullets, False, pygame.sprite.collide_mask):
+            for hit in pygame.sprite.spritecollide(self.player, self.enemyBullets, False, pygame.sprite.collide_mask): # type: ignore
                 self.player.hit(hit)
 
-            for bonus in pygame.sprite.spritecollide(self.player, self.bonus, False, pygame.sprite.collide_mask):
+            for bonus in pygame.sprite.spritecollide(self.player, self.bonus, False, pygame.sprite.collide_mask): # type: ignore
                 self.player.add_bonus(bonus)
                 bonus.kill()
 
-            if not self.player.is_dead() and len(pygame.sprite.spritecollide(self.player, self.enemies, False, pygame.sprite.collide_mask)) > 0:
+            if not self.player.is_dead() and len(pygame.sprite.spritecollide(self.player, self.enemies, False, pygame.sprite.collide_mask)) > 0: # type: ignore
                 self.explosions.add(Explosion(self.player.pos))
                 self.player.kill()
 
             for enemy in self.enemies:
-                for hit in pygame.sprite.spritecollide(enemy, self.playerBullets, False,  pygame.sprite.collide_mask):
+                for hit in pygame.sprite.spritecollide(enemy, self.playerBullets, False,  pygame.sprite.collide_mask): # type: ignore
                     enemy.hit(hit)
                 if enemy.passed():
                     self.player.receive_damage(10)
