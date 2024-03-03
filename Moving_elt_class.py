@@ -16,9 +16,3 @@ class MovingElement(DrawableElement):
         if self.rect.bottom < 0 or self.rect.top > SCREEN_HEIGHT:
             return True 
         return False
-                                                   
-                     
-
-
-
-

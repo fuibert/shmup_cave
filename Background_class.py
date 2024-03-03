@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import K_1,K_2,K_3,K_4,K_5
 from const import *
 
-class Background(pygame.sprite.Sprite):
+class Background(pygame.sprite.WeakSprite):
     def __init__(self, width):
         pygame.sprite.Sprite.__init__(self)
         self.bgimage = pygame.image.load('textures/background/' + BACKGROUND_IMAGE)

@@ -1,7 +1,7 @@
 import pygame
 from const import *
 
-class HealthBar(pygame.sprite.Sprite):
+class HealthBar(pygame.sprite.WeakSprite):
     def __init__(self, width):
         self.image = pygame.image.load('textures/' + HEARTH_IMAGE)
         self.image = pygame.transform.scale_by(self.image, 0.1)
