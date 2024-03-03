@@ -169,21 +169,11 @@ class Game():
                 if enemy.is_dead():
                     self.explosions.add(Explosion(enemy.pos))
                     enemy.kill()
-                    self.score += enemy.points                                                          
+                    self.score += enemy.points                    
 
- #           if Game.apparition_rate <= datetime.datetime.now():
- #               self.enemies.add(Enemy(random.choice(list(self.enemiesAttributes.values()))))
- #               Game.apparition_rate += datetime.timedelta(seconds=randint(0, 7))
+        self.spawn()                    
 
-            if(len(self.enemies) == 0):
-                self.enemies.add(Enemy(random.choice(list(self.enemiesAttributes.values()))))
-
-            if Game.apparition_rate_bonus <= datetime.datetime.now():
-                bonus = random.choices(list(self.bonusAttributes.values()), [val["weight"] for val in self.bonusAttributes.values()], k=1)[0]                
-                self.bonus.add(Bonus(bonus))
-                Game.apparition_rate_bonus += datetime.timedelta(seconds=random.randint(0, 7))
-
-        if self.player.is_dead():
+        if self.player.is_dead() and len(self.explosions) == 0:
             for enemy in self.enemies:
                 enemy.kill()
             for bullet in self.enemyBullets:
@@ -217,3 +207,16 @@ class Game():
             self.school_score_max = self.player.school
         with open("score_board.json", "w") as f:
             f.write(json.dumps(self.score_board))
+
+    def spawn(self):                                      
+ #           if Game.apparition_rate <= datetime.datetime.now():
+ #               self.enemies.add(Enemy(random.choice(list(self.enemiesAttributes.values()))))
+ #               Game.apparition_rate += datetime.timedelta(seconds=randint(0, 7))
+        if(len(self.enemies) == 0 and self.player.is_alive()):
+            self.enemies.add(Enemy(random.choice(list(self.enemiesAttributes.values()))))
+
+        if Game.apparition_rate_bonus <= datetime.datetime.now():
+            bonus = random.choices(list(self.bonusAttributes.values()), [val["weight"] for val in self.bonusAttributes.values()], k=1)[0]                
+            self.bonus.add(Bonus(bonus))
+            Game.apparition_rate_bonus += datetime.timedelta(seconds=random.randint(0, 7))
+        
