@@ -8,7 +8,7 @@ from Control_class import Control
 from Enemy_class import Enemy
 from Explosion_class import Explosion
 from Player_class import Player
-from const import BLACK, FPS, HEALTH_STATE, SCORE_FONT, SCORE_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH
+from const import BLACK, FPS, HEALTH_STATE, GAME_STATE, SCORE_FONT, SCORE_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH
 
 class Game():
 
@@ -35,7 +35,6 @@ class Game():
         
         with open("score_board.json", "r") as f:
             self.score_board = json.loads(f.read())
-        self.reset()
 
         self.score_max = 0
         for item in self.score_board:
@@ -51,11 +50,12 @@ class Game():
         self.waiting_verre = [self.font.render("Placer un verre", True, BLACK),
                               self.font.render("pour demarrer", True, BLACK)]
         self.font_score = pygame.font.Font("src/fonts/" + SCORE_FONT, SCORE_SIZE)
+        
+        self.reset()
 
     def reset(self):
-        self.running = False
+        self.state = GAME_STATE.IDLE
         self.score = 0
-        self.ended = False
 
         if len(self.joysticks) > 0:
             self.player = Player(self.playerAttributes,self.joysticks[0])
@@ -100,7 +100,7 @@ class Game():
         
         self.player.blit(self.screen)
             
-        if not self.running:
+        if self.state == GAME_STATE.IDLE:
             self.display_waiting()
             return
 
@@ -125,17 +125,17 @@ class Game():
         return not pygame.get_init()
 
     def update(self):
-        if not self.running:
+        if self.state == GAME_STATE.IDLE:
             if self.control.shoot():
-                self.running = True
+                self.state = GAME_STATE.TUTO
                 self.player.animate()
 
-        self.background.animate(self.running)
+        self.background.animate(self.state != GAME_STATE.IDLE)
         self.background.update()
 
         self.player.update(self.playerBullets)
 
-        if self.running:
+        if self.state == GAME_STATE.TUTO or self.state == GAME_STATE.RUNNING:
             self.playerBullets.update()
 
             self.enemyBullets.update()
@@ -153,9 +153,12 @@ class Game():
                 self.player.add_bonus(bonus)
                 bonus.kill()
 
-            if not self.player.is_dead() and len(pygame.sprite.spritecollide(self.player, self.enemies, False, pygame.sprite.collide_mask)) > 0: # type: ignore
-                self.explosions.add(Explosion(self.player.pos))
-                self.player.kill()
+            if not self.player.is_dead():
+                for enemy in pygame.sprite.spritecollide(self.player, self.enemies, False, pygame.sprite.collide_mask): # type: ignore
+                    self.explosions.add(Explosion(self.player.pos))
+                    self.player.kill()
+                    enemy.kill()
+                    break                    
 
             for enemy in self.enemies:
                 for hit in pygame.sprite.spritecollide(enemy, self.playerBullets, False,  pygame.sprite.collide_mask): # type: ignore
@@ -191,8 +194,7 @@ class Game():
                 bonus.kill()
             self.score_board[self.player.school].append(self.score)
             #self.store_score()
-            self.player.health_state = HEALTH_STATE.ALIVE
-            self.ended = True
+            self.state=GAME_STATE.ENDED
             return
 
     def loop(self):
