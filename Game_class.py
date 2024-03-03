@@ -142,35 +142,9 @@ class Game():
 
             self.explosions.update()
 
-            self.enemies.update(self.enemyBullets)
+            self.enemies.update(self.enemyBullets)                  
 
-            for bonus in self.bonus:
-                bonus.update()
-            for hit in pygame.sprite.spritecollide(self.player, self.enemyBullets, False, pygame.sprite.collide_mask): # type: ignore
-                self.player.hit(hit)
-
-            for bonus in pygame.sprite.spritecollide(self.player, self.bonus, False, pygame.sprite.collide_mask): # type: ignore
-                self.player.add_bonus(bonus)
-                bonus.kill()
-
-            if not self.player.is_dead():
-                for enemy in pygame.sprite.spritecollide(self.player, self.enemies, False, pygame.sprite.collide_mask): # type: ignore
-                    self.explosions.add(Explosion(self.player.pos))
-                    self.player.kill()
-                    enemy.kill()
-                    break                    
-
-            for enemy in self.enemies:
-                for hit in pygame.sprite.spritecollide(enemy, self.playerBullets, False,  pygame.sprite.collide_mask): # type: ignore
-                    enemy.hit(hit)
-                if enemy.passed():
-                    self.player.receive_damage(10)
-                    enemy.kill()
-                if enemy.is_dead():
-                    self.explosions.add(Explosion(enemy.pos))
-                    enemy.kill()
-                    self.score += enemy.points                    
-
+        self.collisions()
         self.spawn()                    
 
         if self.player.is_dead() and len(self.explosions) == 0:
@@ -219,4 +193,31 @@ class Game():
             bonus = random.choices(list(self.bonusAttributes.values()), [val["weight"] for val in self.bonusAttributes.values()], k=1)[0]                
             self.bonus.add(Bonus(bonus))
             Game.apparition_rate_bonus += datetime.timedelta(seconds=random.randint(0, 7))
-        
+
+    def collisions(self):
+        for bonus in self.bonus:
+            bonus.update()
+        for hit in pygame.sprite.spritecollide(self.player, self.enemyBullets, False, pygame.sprite.collide_mask): # type: ignore
+            self.player.hit(hit)
+
+        for bonus in pygame.sprite.spritecollide(self.player, self.bonus, False, pygame.sprite.collide_mask): # type: ignore
+            self.player.add_bonus(bonus)
+            bonus.kill()
+
+        if not self.player.is_dead():
+            for enemy in pygame.sprite.spritecollide(self.player, self.enemies, False, pygame.sprite.collide_mask): # type: ignore
+                self.explosions.add(Explosion(self.player.pos))
+                self.player.kill()
+                enemy.kill()
+                break                    
+
+        for enemy in self.enemies:
+            for hit in pygame.sprite.spritecollide(enemy, self.playerBullets, False,  pygame.sprite.collide_mask): # type: ignore
+                enemy.hit(hit)
+            if enemy.passed():
+                self.player.receive_damage(10)
+                enemy.kill()
+            if enemy.is_dead():
+                self.explosions.add(Explosion(enemy.pos))
+                enemy.kill()
+                self.score += enemy.points
