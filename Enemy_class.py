@@ -1,7 +1,6 @@
 import math
 from random import randint, randrange
 import pygame
-from Bullet_class import Bullet
 from Plane_class import Plane
 from const import SCREEN_HEIGHT, SCREEN_WIDTH
 

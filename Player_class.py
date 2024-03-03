@@ -45,6 +45,8 @@ class Player(Plane):
         super().move()        
 
     def blit(self, screen):
+        if self.health_state == HEALTH_STATE.DEAD:
+            return                    
         super().blit(screen)
         if self.animation == ANIMATION_STATE.PLAYABLE:
             self.healthBar.render(screen, self.rect.bottom, self.rect.left)
@@ -106,4 +108,5 @@ class Player(Plane):
 
     def kill(self):
         self.health_state = HEALTH_STATE.DEAD
-        super().kill()        
+        self.health = 0        
+        super().kill()

@@ -13,7 +13,7 @@ class Explosion(pygame.sprite.Sprite):
 
     def update(self):
         if self.index >= len(self.images):
-            self.kill()
+            super().kill()
             return
         self.image = self.images[self.index]
         self.rect = self.image.get_rect(center=self.pos)
