@@ -201,7 +201,7 @@ class Game():
         if not self.player.is_dead():
             for enemy in pygame.sprite.spritecollide(self.player, self.enemies, False, pygame.sprite.collide_mask): # type: ignore
                 self.explosions.add(Explosion(self.player.pos))
-                self.player.kill()
+                self.player.receive_damage(self.player.health)
                 enemy.kill()
                 break                    
 
