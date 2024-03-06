@@ -135,30 +135,22 @@ class Game():
 
         self.player.update(self.playerBullets)
 
-        if self.state == GAME_STATE.TUTO or self.state == GAME_STATE.RUNNING:
+        if self.state == GAME_STATE.TUTO or self.state == GAME_STATE.RUNNING or self.state==GAME_STATE.ENDING:
             self.playerBullets.update()
-
             self.enemyBullets.update()
-
             self.explosions.update()
-
-            self.enemies.update(self.enemyBullets)                  
-
+            self.enemies.update(self.enemyBullets)
+            
         self.collisions()
         self.spawn()                    
 
-        if self.player.is_dead() and len(self.explosions) == 0:
-            for enemy in self.enemies:
-                enemy.kill()
-            for bullet in self.enemyBullets:
-                bullet.kill()
-            for bullet in self.playerBullets:
-                bullet.kill()
-            for bonus in self.bonus:
-                bonus.kill()
+        if self.player.is_dead():
+            self.state=GAME_STATE.ENDING
+            
+        if self.state==GAME_STATE.ENDING and len(self.explosions) == 0:
             self.score_board[self.player.school].append(self.score)
             #self.store_score()
-            self.state=GAME_STATE.ENDED
+            self.state = GAME_STATE.ENDED
             return
 
     def loop(self):
@@ -182,7 +174,9 @@ class Game():
         with open("score_board.json", "w") as f:
             f.write(json.dumps(self.score_board))
 
-    def spawn(self):                                      
+    def spawn(self):
+        if self.state==GAME_STATE.ENDED or self.state==GAME_STATE.ENDING:
+            return                    
  #           if Game.apparition_rate <= datetime.datetime.now():
  #               self.enemies.add(Enemy(random.choice(list(self.enemiesAttributes.values()))))
  #               Game.apparition_rate += datetime.timedelta(seconds=randint(0, 7))
