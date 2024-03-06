@@ -24,7 +24,7 @@ class Enemy(Plane):
         left_degree = -round(int(math.degrees(math.atan(left_AC / left_AB))), 2)
 
         # calcul de l'angle à droite de l'avion
-        rigth_AC = SCREEN_WIDTH - pos.y
+        rigth_AC = SCREEN_WIDTH - pos.x
         rigth_AB = SCREEN_HEIGHT
         rigth_degree = round(int(math.degrees(math.atan(rigth_AC/ rigth_AB))), 2)
 
