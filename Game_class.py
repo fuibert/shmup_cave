@@ -6,6 +6,11 @@ from Enemy_class import *
 import datetime
 import json
 from Control_class import *
+import random
+from Bonus_class import Bonus
+from Enemy_class import Enemy
+from Explosion_class import Explosion
+from Menu import Menu
 
 class Game():
 
@@ -22,6 +27,13 @@ class Game():
             print("too many joysticks, plug only one. Bouffon va")
             exit
         self.clock = pygame.time.Clock()
+
+        with open("attributes.json", "r") as f:
+            data = json.loads(f.read())
+            self.playerAttributes = data["player"]
+            self.enemiesAttributes = data["enemies"]
+            self.bonusAttributes = data["bonus"]   
+        
         with open("score_board.json", "r") as f:
             self.score_board = json.loads(f.read())
         self.reset()
@@ -40,8 +52,12 @@ class Game():
         self.waiting_verre = [self.font.render("Placer un verre", True, BLACK),
                               self.font.render("pour demarrer", True, BLACK)]
         self.font_score = pygame.font.Font("src/fonts/" + SCORE_FONT, SCORE_SIZE)
+        self.menu = Menu()
+
+        self.reset()
 
     def reset(self):
+        self.state = GAME_STATE.MENU
         self.running = False
         self.score = 0
         self.ended = False
@@ -85,6 +101,10 @@ class Game():
 
     def render(self):
         self.background.render(self.screen)
+
+        self.menu.render(self.screen)
+
+        self.player.blit(self.screen)
             
         if not self.running:
             self.player.render(self.screen)
@@ -115,7 +135,20 @@ class Game():
             if self.control.shoot():
                 self.running = True
 
-        self.background.animate(self.running)
+        if self.state == GAME_STATE.MENU:
+            if self.control.shoot():
+                self.player.set_player_school(self.menu.chose_school("SHOOT"))
+                self.state = GAME_STATE.IDLE
+            if self.control.up():
+                self.menu.chose_school("UP")
+            if self.control.down():
+                self.menu.chose_school("DOWN")
+            if self.control.left():
+                self.menu.chose_school("LEFT")
+            if self.control.right():
+                self.menu.chose_school("RIGHT")
+
+        self.background.animate(self.state != GAME_STATE.IDLE)
         self.background.update()
 
         if self.running:
@@ -130,7 +163,7 @@ class Game():
 
             self.player.update(self.playerBullets)
             self.player.render_health_bar(self.screen)
-            
+
             for hit in pygame.sprite.spritecollide(self.player, self.enemyBullets, False):
                 self.player.hit(hit.damage)
                 hit.kill()
@@ -164,6 +197,9 @@ class Game():
             self.store_score()
             self.player.alive = True
             self.ended = True
+            #self.store_score()
+            self.state = GAME_STATE.ENDED
+            self.menu.reset()
             return
 
     def loop(self):
@@ -186,3 +222,45 @@ class Game():
             self.school_score_max = self.player.school
         with open("score_board.json", "w") as f:
             f.write(json.dumps(self.score_board))
+
+    def spawn(self):
+        if self.state==GAME_STATE.ENDED or self.state==GAME_STATE.ENDING:
+            return                    
+ #           if Game.apparition_rate <= datetime.datetime.now():
+ #               self.enemies.add(Enemy(random.choice(list(self.enemiesAttributes.values()))))
+ #               Game.apparition_rate += datetime.timedelta(seconds=randint(0, 7))
+        if(len(self.enemies) == 0 and self.player.is_alive()):
+            self.enemies.add(Enemy(random.choice(list(self.enemiesAttributes.values()))))
+
+        if Game.apparition_rate_bonus <= datetime.datetime.now():
+            bonus = random.choices(list(self.bonusAttributes.values()), [val["weight"] for val in self.bonusAttributes.values()], k=1)[0]                
+            self.bonus.add(Bonus(bonus))
+            Game.apparition_rate_bonus += datetime.timedelta(seconds=random.randint(0, 7))
+
+    def collisions(self):
+        for bonus in self.bonus:
+            bonus.update()
+        for hit in pygame.sprite.spritecollide(self.player, self.enemyBullets, False, pygame.sprite.collide_mask): # type: ignore
+            self.player.hit(hit)
+
+        for bonus in pygame.sprite.spritecollide(self.player, self.bonus, False, pygame.sprite.collide_mask): # type: ignore
+            self.player.add_bonus(bonus)
+            bonus.kill()
+
+        if not self.player.is_dead():
+            for enemy in pygame.sprite.spritecollide(self.player, self.enemies, False, pygame.sprite.collide_mask): # type: ignore
+                self.explosions.add(Explosion(self.player.pos))
+                self.player.receive_damage(self.player.health)
+                enemy.kill()
+                break                    
+
+        for enemy in self.enemies:
+            for hit in pygame.sprite.spritecollide(enemy, self.playerBullets, False,  pygame.sprite.collide_mask): # type: ignore
+                enemy.hit(hit)
+            if enemy.passed():
+                self.player.receive_damage(10)
+                enemy.kill()
+            if enemy.is_dead():
+                self.explosions.add(Explosion(enemy.pos))
+                enemy.kill()
+                self.score += enemy.points
