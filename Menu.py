@@ -16,6 +16,9 @@ class Menu(pygame.sprite.Sprite):
         self.number_of_line = 5
         self.image_size = SCREEN_WIDTH / 6
 
+        self.background = pygame.image.load('textures/background/bg_menu.jpg')
+        self.background = pygame.transform.scale(self.background, (1080, 1000))
+
         for file in os.listdir(directory):
             filename = os.fsdecode(file)
             image = pygame.image.load('textures/assos/' + filename)
@@ -28,10 +31,11 @@ class Menu(pygame.sprite.Sprite):
     def render(self, screen):
         if not self.select_done:
             compt = 0
+            screen.blit(self.background,(0,350))
             for image in Menu.school_list:
                 if compt == self.selected_image:
-                    pygame.draw.circle(screen, (0, 0, 0, 0), (50 + self.image_size/2 + compt % self.number_of_line * self.image_size, 500 + self.image_size/2 + compt // self.number_of_line * self.image_size), self.image_size/2)
-                screen.blit(image, (50 + compt % self.number_of_line * self.image_size, 500 + compt // self.number_of_line * self.image_size))
+                    pygame.draw.circle(screen, (255, 255, 255, 255), (50 + self.image_size/2 + compt % self.number_of_line * self.image_size + 25, 500 + self.image_size/2 + compt // self.number_of_line * self.image_size), self.image_size/2+5)
+                screen.blit(image, (50 + compt % self.number_of_line * self.image_size + 25, 500 + compt // self.number_of_line * self.image_size))
                 compt += 1
 
 
@@ -40,9 +44,9 @@ class Menu(pygame.sprite.Sprite):
             self.select_done = True
             return Menu.school_name[self.selected_image]
         if action == "DOWN" and self.selected_image + self.number_of_line < len(Menu.school_list):
-            self.selected_image += 10
+            self.selected_image += self.number_of_line
         if action == "UP" and self.selected_image - self.number_of_line >= 0:
-            self.selected_image -= 10
+            self.selected_image -= self.number_of_line
         if action == "LEFT" and self.selected_image - 1 >= 0:
             self.selected_image -= 1
         if action == "RIGHT" and self.selected_image + 1 < len(Menu.school_list):
