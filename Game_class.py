@@ -63,10 +63,10 @@ class Game():
         self.ended = False
 
         if len(self.joysticks) > 0:
-            self.player = Player(self.joysticks[0])
+            self.player = Player(self.playerAttributes,self.joysticks[0])
             self.control = Control(self.joysticks[0])
         else:
-            self.player = Player(None)
+            self.player = Player(self.playerAttributes,None)
             self.control = Control(None)
         SCREEN_WIDTH, SCREEN_HEIGHT = pygame.display.get_window_size()
         self.background = Background(SCREEN_WIDTH)
@@ -74,7 +74,6 @@ class Game():
         self.enemyBullets = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
 
-        self.player.reset()
 
 
     def check_exit(self):
@@ -107,7 +106,7 @@ class Game():
         self.player.blit(self.screen)
             
         if not self.running:
-            self.player.render(self.screen)
+            self.player.blit(self.screen)
             self.display_waiting()
             return
 
