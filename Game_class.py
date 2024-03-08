@@ -105,6 +105,7 @@ class Game():
         self.menu.render(self.screen)
             
         if self.state == GAME_STATE.IDLE:
+            self.player.blit(self.screen)
             self.display_waiting()
             return
 
