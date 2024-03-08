@@ -31,11 +31,11 @@ class Menu(pygame.sprite.Sprite):
     def render(self, screen):
         if not self.select_done:
             compt = 0
-            screen.blit(self.background,(0,350))
+            screen.blit(self.background,(0,120))
             for image in Menu.school_list:
                 if compt == self.selected_image:
-                    pygame.draw.circle(screen, (255, 255, 255, 255), (50 + self.image_size/2 + compt % self.number_of_line * self.image_size + 25, 500 + self.image_size/2 + compt // self.number_of_line * self.image_size), self.image_size/2+5)
-                screen.blit(image, (50 + compt % self.number_of_line * self.image_size + 25, 500 + compt // self.number_of_line * self.image_size))
+                    pygame.draw.circle(screen, (255, 255, 255, 255), (50 + self.image_size/2 + compt % self.number_of_line * self.image_size + 25, 275 + self.image_size/2 + compt // self.number_of_line * self.image_size), self.image_size/2+5)
+                screen.blit(image, (50 + compt % self.number_of_line * self.image_size + 25, 275 + compt // self.number_of_line * self.image_size))
                 compt += 1
 
 
