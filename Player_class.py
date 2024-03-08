@@ -110,3 +110,6 @@ class Player(Plane):
         self.health_state = HEALTH_STATE.DEAD
         self.health = 0        
         super().kill()
+
+    def set_player_school(self, school):
+        self.school = school

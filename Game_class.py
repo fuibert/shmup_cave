@@ -9,6 +9,7 @@ from Enemy_class import Enemy
 from Explosion_class import Explosion
 from Player_class import Player
 from const import BLACK, FPS, HEALTH_STATE, GAME_STATE, SCORE_FONT, SCORE_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH
+from Menu import Menu
 
 class Game():
 
@@ -50,11 +51,14 @@ class Game():
         self.waiting_verre = [self.font.render("Placer un verre", True, BLACK),
                               self.font.render("pour demarrer", True, BLACK)]
         self.font_score = pygame.font.Font("src/fonts/" + SCORE_FONT, SCORE_SIZE)
+        self.menu = Menu()
         
         self.reset()
 
+        self.reset()
+
     def reset(self):
-        self.state = GAME_STATE.IDLE
+        self.state = GAME_STATE.MENU
         self.score = 0
 
         if len(self.joysticks) > 0:
@@ -98,6 +102,7 @@ class Game():
     def render(self):
         self.background.render(self.screen)        
         self.player.blit(self.screen)
+        self.menu.render(self.screen)
             
         if self.state == GAME_STATE.IDLE:
             self.display_waiting()
@@ -125,6 +130,19 @@ class Game():
             if self.control.shoot():
                 self.state = GAME_STATE.TUTO
                 self.player.animate()
+
+        if self.state == GAME_STATE.MENU:
+            if self.control.shoot():
+                self.player.set_player_school(self.menu.chose_school("SHOOT"))
+                self.state = GAME_STATE.IDLE
+            if self.control.up():
+                self.menu.chose_school("UP")
+            if self.control.down():
+                self.menu.chose_school("DOWN")
+            if self.control.left():
+                self.menu.chose_school("LEFT")
+            if self.control.right():
+                self.menu.chose_school("RIGHT")
 
         self.background.animate(self.state != GAME_STATE.IDLE)
         self.background.update()
