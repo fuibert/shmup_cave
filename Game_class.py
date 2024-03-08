@@ -96,8 +96,7 @@ class Game():
                          SCREEN_HEIGHT / 2 - 15))
 
     def render(self):
-        self.background.render(self.screen)
-        
+        self.background.render(self.screen)        
         self.player.blit(self.screen)
             
         if self.state == GAME_STATE.IDLE:
@@ -108,11 +107,8 @@ class Game():
             enemy.blit(self.screen)
 
         self.playerBullets.draw(self.screen)
-
         self.enemyBullets.draw(self.screen)
-
         self.explosions.draw(self.screen)
-
         self.bonus.draw(self.screen)
             
         self.display_score = self.font_score.render("SCORE: " + str(self.score), True, BLACK)
