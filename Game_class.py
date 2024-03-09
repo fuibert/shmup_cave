@@ -105,7 +105,7 @@ class Game():
 
     def render(self):
         self.background.render(self.screen)        
-        self.player.blit(self.screen)
+        # self.player.blit(self.screen)
         # self.menu.render(self.screen)
         if self.state == GAME_STATE.MENU:
             self.statistics.render(self.screen)
@@ -122,12 +122,13 @@ class Game():
         self.playerBullets.draw(self.screen)
         self.enemyBullets.draw(self.screen)
         self.explosions.draw(self.screen)
-        self.bonus.draw(self.screen)
+        if self.state != GAME_STATE.MENU:
+            self.bonus.draw(self.screen)
+            self.player.blit(self.screen)
             
         self.display_score = self.font_score.render("SCORE: " + str(self.score), True, BLACK)
         self.screen.blit(self.display_score, ((SCREEN_WIDTH / 2) - (self.display_score.get_rect().width / 2), 20))
 
-        self.player.blit(self.screen)
         return
 
     def exit_requested(self):
