@@ -10,6 +10,7 @@ from Explosion_class import Explosion
 from Player_class import Player
 from const import BLACK, FPS, HEALTH_STATE, GAME_STATE, SCORE_FONT, SCORE_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH
 from Menu import Menu
+from Statistics import Statistics
 
 class Game():
 
@@ -52,6 +53,7 @@ class Game():
                               self.font.render("pour demarrer", True, BLACK)]
         self.font_score = pygame.font.Font("src/fonts/" + SCORE_FONT, SCORE_SIZE)
         self.menu = Menu()
+        self.statistics = Statistics()
         
         self.reset()
 
@@ -76,6 +78,8 @@ class Game():
         self.enemies = pygame.sprite.Group()
         self.bonus = pygame.sprite.Group()
         self.explosions = pygame.sprite.Group()
+        self.statistics.reset(self.score_board)
+        self.menu.reset()
 
     def check_exit(self):
         if not pygame.get_init():
@@ -102,7 +106,10 @@ class Game():
     def render(self):
         self.background.render(self.screen)        
         self.player.blit(self.screen)
-        self.menu.render(self.screen)
+        # self.menu.render(self.screen)
+        if self.state == GAME_STATE.MENU:
+            self.statistics.render(self.screen)
+            self.menu.render(self.screen)
             
         if self.state == GAME_STATE.IDLE:
             self.player.blit(self.screen)
@@ -164,7 +171,7 @@ class Game():
             
         if self.state==GAME_STATE.ENDING and len(self.explosions) == 0:
             self.score_board[self.player.school].append(self.score)
-            #self.store_score()
+            self.store_score()
             self.state = GAME_STATE.ENDED
             return
 

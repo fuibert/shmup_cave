@@ -31,6 +31,9 @@ HEARTH_IMAGE = 'coeur.png'
 SCORE_FONT = "Top_Secret_Stamp.ttf"
 SCORE_SIZE = 100
 
+STAT_FONT = "Top_Secret_Stamp.ttf"
+STAT_SIZE = 75
+
 HEALTH_STATE = Enum('health', [ 'ALIVE', 'HITTED', 'DEAD'])
 ANIMATION_STATE = Enum('status', ['IDLE', 'ANIMATED', 'TUTO', 'PLAYABLE'])
 GAME_STATE = Enum('state', ['MENU','IDLE', 'TUTO', 'RUNNING', 'ENDING', 'ENDED'])
