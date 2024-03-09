@@ -32,7 +32,7 @@ SCORE_FONT = "Top_Secret_Stamp.ttf"
 SCORE_SIZE = 100
 
 STAT_FONT = "Top_Secret_Stamp.ttf"
-STAT_SIZE = 75
+STAT_SIZE = 60
 
 HEALTH_STATE = Enum('health', [ 'ALIVE', 'HITTED', 'DEAD'])
 ANIMATION_STATE = Enum('status', ['IDLE', 'ANIMATED', 'TUTO', 'PLAYABLE'])
