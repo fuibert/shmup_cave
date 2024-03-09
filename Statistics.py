@@ -18,8 +18,11 @@ class Statistics(pygame.sprite.Sprite):
             tmp_school = ""
             for school in self.top10[placement]["school"]:
                 tmp_school += school + ", "
-            score_tmp = self.font_score.render(str(placement) + ".    " + str(self.top10[placement]["score"]) + ": " + str(tmp_school[:-2]), True, BLACK)
+            score_tmp = self.font_score.render(str(self.top10[placement]["score"]) + ": " + str(tmp_school[:-2]), True, BLACK)
+            placement_tmp = self.font_score.render(str(placement) + "." , True,BLACK)
             screen.blit(score_tmp, ((SCREEN_WIDTH * 0.5) - (score_tmp.get_rect().width / 2),
+                                    SCREEN_HEIGHT / 2 + 300 + (placement - 1) * STAT_SIZE))
+            screen.blit(placement_tmp, ((SCREEN_WIDTH * 0.1) - (placement_tmp.get_rect().width / 2),
                                     SCREEN_HEIGHT / 2 + 300 + (placement - 1) * STAT_SIZE))
 
         ## top ecole
