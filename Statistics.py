@@ -5,7 +5,7 @@ from const import *
 class Statistics(pygame.sprite.Sprite):
     def __init__(self):
         self.background = pygame.image.load('textures/background/bg_stat.png')
-        self.background = pygame.transform.scale(self.background, (1080, 1000))
+        self.background = pygame.transform.scale(self.background, (SCREEN_WIDTH, SCREEN_WIDTH * self.background.get_height() / self.background.get_width()))
 
         self.font_score = pygame.font.Font("src/fonts/" + STAT_FONT, STAT_SIZE)
         self.top = {}
@@ -13,7 +13,7 @@ class Statistics(pygame.sprite.Sprite):
 
     def render(self, screen):
         ## top 10 general
-        screen.blit(self.background, (0, SCREEN_HEIGHT / 2 + 150))
+        screen.blit(self.background, (0, SCREEN_HEIGHT * 0.6))
         for placement in self.top10:
             tmp_school = ""
             for school in self.top10[placement]["school"]:
@@ -21,9 +21,9 @@ class Statistics(pygame.sprite.Sprite):
             score_tmp = self.font_score.render(str(self.top10[placement]["score"]) + ": " + str(tmp_school[:-2]), True, BLACK)
             placement_tmp = self.font_score.render(str(placement) + "." , True,BLACK)
             screen.blit(score_tmp, ((SCREEN_WIDTH * 0.5) - (score_tmp.get_rect().width / 2),
-                                    SCREEN_HEIGHT / 2 + 300 + (placement - 1) * STAT_SIZE))
+                                    SCREEN_HEIGHT * 0.65 + (placement - 1) * STAT_SIZE))
             screen.blit(placement_tmp, ((SCREEN_WIDTH * 0.1) - (placement_tmp.get_rect().width / 2),
-                                    SCREEN_HEIGHT / 2 + 300 + (placement - 1) * STAT_SIZE))
+                                    SCREEN_HEIGHT * 0.65  + (placement - 1) * STAT_SIZE))
 
         ## top ecole
         # nb_score = 0
