@@ -7,7 +7,8 @@ class Plane(MovingElement):
     def __init__(self, attributes, pos, angle, speed):
         self.lastShoot = 0
         self.cadence = attributes["cadence"]
-        self.bullet = attributes["bullet"]      
+        self.CADENCE = attributes["cadence"]
+        self.bullet = attributes["bullet"]
         self.damage = attributes["damage"]        
         
         self.health = attributes["health"]
@@ -27,7 +28,7 @@ class Plane(MovingElement):
         self.move()
         self.show_mask = (self.health_state == HEALTH_STATE.HITTED)
         if pygame.time.get_ticks() - self.hitted > HITTED_DURATION:
-            self.health_state = HEALTH_STATE.ALIVE                                                         
+            self.health_state = HEALTH_STATE.ALIVE
     
     def shoot(self, bullets):
         now = pygame.time.get_ticks()
@@ -35,7 +36,7 @@ class Plane(MovingElement):
             self.lastShoot = now
             direct = pygame.math.Vector2(0, self.rect.width / 2).rotate(180 - self.angle)
             pos = pygame.math.Vector2(self.pos) + direct
-            bullets.add(Bullet(pos, 180 - self.angle, self.bullet, self.damage))            
+            bullets.add(Bullet(pos, 180 - self.angle, self.bullet, self.damage,self.size))
 
     def hit(self, bullet):
         self.receive_damage(bullet.damage)

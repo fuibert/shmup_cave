@@ -70,6 +70,8 @@ class Player(Plane):
             if pygame.time.get_ticks() - self.tuto_time > TUTO_DURATION:
                 self.animation = ANIMATION_STATE.PLAYABLE
 
+        self.update_bonus()
+
         if self.control.shoot():
             super().shoot(bullets)
 
@@ -81,16 +83,18 @@ class Player(Plane):
     def add_bonus(self, bonus):
         if self.bonus_time == 0:
             self.bonus_time = pygame.time.get_ticks()
-            self.shoot_delay = self.shoot_delay / bonus.effect["attack_speed_modifier"]
+            self.cadence = self.cadence / bonus.effect["attack_speed_modifier"]
             self.lin_speed = self.lin_speed * bonus.effect["plane_speed_modifier"]
             self.health = minimum(self.health + bonus.effect["healing"], self.max_health)
             self.bonus_duration = bonus.effect["duration"]
+            self.show_bonus_mask = True
 
     def update_bonus(self):
-        if self.bonus_time != 0 and pygame.time.get_ticks() - self.bonus_time < self.bonus_duration:
+        if self.bonus_time != 0 and pygame.time.get_ticks() - self.bonus_time > self.bonus_duration:
             self.bonus_time = 0
-            self.shoot_delay = SHOOT_DELAY
+            self.cadence = self.CADENCE
             self.lin_speed = self.lin_speed_def
+            self.show_bonus_mask = False
 
     def animate(self):
         self.animation = ANIMATION_STATE.ANIMATED

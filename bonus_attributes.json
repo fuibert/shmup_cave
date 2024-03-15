@@ -9,18 +9,18 @@
             "speed": 0.5,
             "size_x": 49,
             "size_y": 18,
-            "duration": 1000
+            "duration": 100000
         },
     "beer":
         {
             "sprite": "beer.png",
             "weight" : 10,
-            "attack_speed_modifier": 0,
+            "attack_speed_modifier": 1,
             "plane_speed_modifier": 50,
             "healing": 0,
             "speed": 0.5,
             "size_x": 19,
             "size_y": 18,
-            "duration": 1000
+            "duration": 100000
         }
 }

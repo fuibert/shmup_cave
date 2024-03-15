@@ -4,6 +4,7 @@ from const import SCREEN_WIDTH
 class DrawableElement(pygame.sprite.WeakSprite):
     def __init__(self, image_path, width, angle, pos):
         self.set_image("textures/" + image_path, angle, width)
+        self.size = width
         self.pos = pos
         self.angle = angle        
         self.rect = self.image.get_rect(center=self.pos) 
@@ -17,7 +18,8 @@ class DrawableElement(pygame.sprite.WeakSprite):
                             (width * SCREEN_WIDTH, self.image.get_height()  * SCREEN_WIDTH / self.image.get_width() * width))
         self.mask = pygame.mask.from_surface(self.image)
         self.show_mask = False
-        
+        self.show_bonus_mask = False
+
     def update(self):
         pass
 
@@ -26,4 +28,8 @@ class DrawableElement(pygame.sprite.WeakSprite):
         if self.show_mask:
             screen.blit(
                 self.mask.to_surface(setcolor=pygame.Color(255,0,0,127),unsetcolor=pygame.Color(0,0,0,0)),
+                self.rect)
+        elif self.show_bonus_mask:
+            screen.blit(
+                self.mask.to_surface(setcolor=pygame.Color(255, 215, 0, 127), unsetcolor=pygame.Color(0, 0, 0, 0)),
                 self.rect)

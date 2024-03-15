@@ -3,11 +3,11 @@ from Moving_elt_class import MovingElement
 from const import *
 
 class Bullet(MovingElement):
-    def __init__(self, pos, direction, path, damage):
+    def __init__(self, pos, direction, path, damage, size=0.03):
         self.damage = damage
         super().__init__(
             "bullets/" + path,
-            0.03,
+            size * BULLET_SIZE_RATIO,
             pos,
             -direction,
             pygame.math.Vector2( 0, BULLET_SPEED * SCREEN_HEIGHT).rotate(direction)

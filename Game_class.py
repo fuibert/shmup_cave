@@ -8,14 +8,14 @@ from Control_class import Control
 from Enemy_class import Enemy
 from Explosion_class import Explosion
 from Player_class import Player
-from const import BLACK, FPS, HEALTH_STATE, GAME_STATE, SCORE_FONT, SCORE_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH
+from const import BLACK, FPS, HEALTH_STATE, GAME_STATE, SCORE_FONT, SCORE_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH, BONUS_RATE_MIN, BONUS_RATE_MAX
 from Menu import Menu
 from Statistics import Statistics
 
 class Game():
 
     apparition_rate = datetime.datetime.now() + datetime.timedelta(seconds=random.randint(0, 7))
-    apparition_rate_bonus = datetime.datetime.now() + datetime.timedelta(seconds=random.randint(0, 7))
+    apparition_rate_bonus = datetime.datetime.now() + datetime.timedelta(seconds=random.randint(BONUS_RATE_MIN, BONUS_RATE_MAX))
 
     def __init__(self):
         super().__init__() 
@@ -209,7 +209,7 @@ class Game():
         if Game.apparition_rate_bonus <= datetime.datetime.now():
             bonus = random.choices(list(self.bonusAttributes.values()), [val["weight"] for val in self.bonusAttributes.values()], k=1)[0]                
             self.bonus.add(Bonus(bonus))
-            Game.apparition_rate_bonus += datetime.timedelta(seconds=random.randint(0, 7))
+            Game.apparition_rate_bonus += datetime.timedelta(seconds=random.randint(BONUS_RATE_MIN, BONUS_RATE_MAX))
 
     def collisions(self):
         for bonus in self.bonus:
