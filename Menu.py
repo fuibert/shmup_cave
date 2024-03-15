@@ -16,7 +16,7 @@ class Menu(pygame.sprite.Sprite):
         self.number_of_line = 5
         self.image_size = SCREEN_WIDTH / 6
 
-        self.background = pygame.image.load('textures/background/bg_menu.jpg')
+        self.background = pygame.image.load('textures/background/bg_menu.png')
         self.background = pygame.transform.scale(self.background, (1080, 1000))
 
         for file in os.listdir(directory):

@@ -4,7 +4,7 @@ from const import *
 
 class Statistics(pygame.sprite.Sprite):
     def __init__(self):
-        self.background = pygame.image.load('textures/background/bg_stat.jpg')
+        self.background = pygame.image.load('textures/background/bg_stat.png')
         self.background = pygame.transform.scale(self.background, (1080, 1000))
 
         self.font_score = pygame.font.Font("src/fonts/" + STAT_FONT, STAT_SIZE)
