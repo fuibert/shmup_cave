@@ -7,6 +7,8 @@ game = Game_class.Game()
 
 while not game.exit_requested():
     if not IO_Controller.verre():
+        print("en attente d'un verre")
+        time.sleep(0.1)
         game.reset()
     
     game.loop()
