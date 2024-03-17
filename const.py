@@ -44,3 +44,13 @@ BONUS_RATE_MIN = 5
 BONUS_RATE_MAX = 15
 
 BULLET_SIZE_RATIO = 0.2
+
+################################### IO
+################## IO - MODE
+
+################## IO - PIN
+RELAY_PIN = 17
+CAPTOR_LED_PIN = 22
+RECEIVER_PIN = 27
+FAKE_RELAY_PIN = 26
+IO_MODE = "RELAY" # RELAY or FAKE_RELAY
