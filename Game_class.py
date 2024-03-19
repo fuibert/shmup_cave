@@ -8,8 +8,10 @@ from Control_class import Control
 from Enemy_class import Enemy
 from Explosion_class import Explosion
 from Player_class import Player
-from const import BLACK, FPS, HEALTH_STATE, GAME_STATE, SCORE_FONT, SCORE_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH, BONUS_RATE_MIN, BONUS_RATE_MAX
+from const import (BLACK, FPS, HEALTH_STATE, GAME_STATE, SCORE_FONT, SCORE_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH, BONUS_RATE_MIN,
+                   BONUS_RATE_MAX, NB_ENNEMY_ALLOWED_TO_PASS)
 from Menu import Menu
+from Reward import Reward
 from Statistics import Statistics
 
 class Game():
@@ -53,14 +55,15 @@ class Game():
                               self.font.render("pour demarrer", True, BLACK)]
         self.font_score = pygame.font.Font("src/fonts/" + SCORE_FONT, SCORE_SIZE)
         self.menu = Menu()
+        self.reward = Reward()
         self.statistics = Statistics()
         
         self.reset()
 
-        self.reset()
 
     def reset(self):
         self.state = GAME_STATE.MENU
+
         self.score = 0
 
         if len(self.joysticks) > 0:
@@ -110,7 +113,7 @@ class Game():
         if self.state == GAME_STATE.MENU:
             self.statistics.render(self.screen)
             self.menu.render(self.screen)
-            
+
         if self.state == GAME_STATE.IDLE:
             self.player.blit(self.screen)
             self.display_waiting()
@@ -136,14 +139,17 @@ class Game():
 
     def update(self):
         if self.state == GAME_STATE.IDLE:
-            if self.control.shoot():
-                self.state = GAME_STATE.TUTO
-                self.player.animate()
+            print("idle")
+            # if self.control.shoot():
+                # self.state = GAME_STATE.TUTO
+                # self.player.animate()
 
         if self.state == GAME_STATE.MENU:
             if self.control.shoot():
                 self.player.set_player_school(self.menu.chose_school("SHOOT"))
-                self.state = GAME_STATE.IDLE
+                # self.state = GAME_STATE.IDLE
+                self.state = GAME_STATE.TUTO
+                self.player.animate()
             if self.control.up():
                 self.menu.chose_school("UP")
             if self.control.down():
@@ -153,7 +159,7 @@ class Game():
             if self.control.right():
                 self.menu.chose_school("RIGHT")
 
-        self.background.animate(self.state != GAME_STATE.IDLE)
+        self.background.animate(self.state != GAME_STATE.IDLE and self.state != GAME_STATE.MENU)
         self.background.update()
 
         self.player.update(self.playerBullets)
@@ -232,9 +238,20 @@ class Game():
             for hit in pygame.sprite.spritecollide(enemy, self.playerBullets, False,  pygame.sprite.collide_mask): # type: ignore
                 enemy.hit(hit)
             if enemy.passed():
-                self.player.receive_damage(10)
+                self.player.receive_damage(self.player.max_health / NB_ENNEMY_ALLOWED_TO_PASS)
                 enemy.kill()
             if enemy.is_dead():
                 self.explosions.add(Explosion(enemy.pos))
                 enemy.kill()
                 self.score += enemy.points
+    def idleMode(self):
+        self.state = GAME_STATE.IDLE
+    def menuMode(self):
+        self.state = GAME_STATE.MENU
+
+    def isIdle(self):
+        return self.state == GAME_STATE.IDLE
+
+    def rewardMode(self):
+        print("reward")
+        self.reward.render(self.screen)

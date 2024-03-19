@@ -45,10 +45,13 @@ BONUS_RATE_MAX = 15
 
 BULLET_SIZE_RATIO = 0.2
 
+NB_ENNEMY_ALLOWED_TO_PASS = 3
+
 ################################### IO
 ################## IO - MODE
 
 ################## IO - PIN
+SKIP_IO = True
 RELAY_PIN = 17
 CAPTOR_LED_PIN = 22
 RECEIVER_PIN = 27

@@ -36,20 +36,21 @@ class Statistics(pygame.sprite.Sprite):
         #     screen.blit(score_tmp, ((SCREEN_WIDTH * place) - (score_tmp.get_rect().width / 2), SCREEN_HEIGHT / 2 + 300 + (nb_score // 2) * STAT_SIZE))
         #     nb_score += 1
 
+
     def reset(self, score_board):
         ## top 10
         tmp_liste = []
         for school in score_board:
             tmp_liste.extend(score_board[school])
-        # tmp_liste.sort(reverse=True)
+
         tmp_liste = sorted(list(dict.fromkeys(tmp_liste)), reverse = True)
+        tmp_liste = tmp_liste + [0]*(len(score_board) - len(tmp_liste))
+
         for placement in range(1,11):
             self.top10[placement] = {"score":tmp_liste[placement - 1], "school":[]}
             for school in score_board:
                 if tmp_liste[placement - 1] in score_board[school]:
                     self.top10[placement]["school"].append(school)
-
-
 
         ## top ecole
         for school in score_board:
