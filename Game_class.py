@@ -20,6 +20,7 @@ class Game():
         super().__init__() 
         # pygame setup
         pygame.init()
+        pygame.mouse.set_visible(False)
         self.screen = pygame.display.set_mode((1080, 1920), pygame.FULLSCREEN | pygame.SCALED)
         pygame.joystick.init()
         self.joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
