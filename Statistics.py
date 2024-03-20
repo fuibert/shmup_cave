@@ -6,7 +6,8 @@ from const import *
 class Statistics(pygame.sprite.Sprite):
     def __init__(self):
         self.background = pygame.image.load('textures/background/bg_stat.png')
-        self.background = pygame.transform.scale(self.background, (SCREEN_WIDTH, SCREEN_WIDTH * self.background.get_height() / self.background.get_width()))
+        self.background = pygame.transform.scale(self.background, 
+                                                 (SCREEN_WIDTH, SCREEN_WIDTH * self.background.get_height() /self.background.get_width()))
 
         self.font_score = pygame.font.Font("src/fonts/" + STAT_FONT, STAT_SIZE)
         self.top = {}

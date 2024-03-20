@@ -1,15 +1,11 @@
-import datetime
-import json
-import random
-import pygame
+import datetime,json,random,pygame
 from Background_class import Background
 from Bonus_class import Bonus
 from Control_class import Control
 from Enemy_class import Enemy
 from Explosion_class import Explosion
 from Player_class import Player
-from const import (BLACK, FPS, HEALTH_STATE, GAME_STATE, SCORE_FONT, SCORE_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH, BONUS_RATE_MIN,
-                   BONUS_RATE_MAX, NB_ENNEMY_ALLOWED_TO_PASS)
+from const import (BLACK, FPS, HEALTH_STATE, GAME_STATE, MAX_TUTO_STEP, SCORE_FONT, SCORE_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH, BONUS_RATE_MIN, BONUS_RATE_MAX, NB_ENNEMY_ALLOWED_TO_PASS)
 from Menu import Menu
 from Reward import Reward
 from Statistics import Statistics
@@ -66,6 +62,7 @@ class Game():
         self.state = GAME_STATE.MENU
 
         self.score = 0
+        self.tuto_step = 0        
 
         if len(self.joysticks) > 0:
             self.player = Player(self.playerAttributes,self.joysticks[0])
@@ -144,6 +141,7 @@ class Game():
             # if self.control.shoot():
                 # self.state = GAME_STATE.TUTO
                 # self.player.animate()
+                # self.start_time = datetime.datetime.now()                
 
         if self.state == GAME_STATE.MENU:
             if self.control.shoot():
@@ -172,8 +170,12 @@ class Game():
             self.enemies.update(self.enemyBullets)
             
         self.collisions()
-        self.spawn()                    
+        self.spawn()
 
+        if self.state == GAME_STATE.TUTO:
+            if datetime.datetime.now() - self.start_time >= datetime.timedelta(TUTO_DURATION): 
+                self.state = GAME_STATE.RUNNING
+                        
         if self.player.is_dead():
             self.state=GAME_STATE.ENDING
             
@@ -207,10 +209,25 @@ class Game():
 
     def spawn(self):
         if self.state==GAME_STATE.ENDED or self.state==GAME_STATE.ENDING:
-            return                    
- #           if Game.apparition_rate <= datetime.datetime.now():
- #               self.enemies.add(Enemy(random.choice(list(self.enemiesAttributes.values()))))
- #               Game.apparition_rate += datetime.timedelta(seconds=randint(0, 7))
+            return
+
+        if self.state==GAME_STATE.TUTO:
+            if(len(self.enemies) == 0 and self.player.is_alive()):
+                if self.tuto_step == 0:
+                    self.enemies.add(Enemy(list(self.enemiesAttributes.values())[0])) 
+                if self.tuto_step == 1:
+                    self.enemies.add(Enemy(list(self.enemiesAttributes.values())[0])) 
+                    self.enemies.add(Enemy(list(self.enemiesAttributes.values())[1])) 
+                    self.enemies.add(Enemy(list(self.enemiesAttributes.values())[2]))    
+                self.tuto_step += 1
+            
+            if self.tuto_step >= MAX_TUTO_STEP:
+                self.state = GAME_STATE.RUNNING  
+            return                                                                            
+                                      
+ #       if Game.apparition_rate <= datetime.datetime.now():
+ #           self.enemies.add(Enemy(random.choice(list(self.enemiesAttributes.values()))))
+ #           Game.apparition_rate += datetime.timedelta(seconds=random.randint(0, 7))
         if(len(self.enemies) == 0 and self.player.is_alive()):
             self.enemies.add(Enemy(random.choice(list(self.enemiesAttributes.values()))))
 
