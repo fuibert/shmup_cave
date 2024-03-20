@@ -36,7 +36,7 @@ STAT_SIZE = 55
 
 HEALTH_STATE = Enum('health', [ 'ALIVE', 'HITTED', 'DEAD'])
 ANIMATION_STATE = Enum('status', ['IDLE', 'ANIMATED', 'TUTO', 'PLAYABLE'])
-GAME_STATE = Enum('state', ['MENU','IDLE', 'TUTO', 'RUNNING', 'ENDING', 'ENDED'])
+GAME_STATE = Enum('state', ['MENU','IDLE', 'TUTO', 'RUNNING', 'ENDING', 'ENDED', 'REWARD'])
 
 TUTO_DURATION = 3000
 

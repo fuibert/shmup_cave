@@ -13,27 +13,27 @@ class IO_Controller():
         self.receiver = Button(RECEIVER_PIN)
         self.led.on()
 
-    def remplissage(self):
+    def remplissage(self, score):
         start_time = time.time()
+        score_modifier = self.calculate_score_modifier()
         try:
-            while self.verre() and time.time() < start_time + DUREE_REMPLISSAGE:
+            while self.verre() and time.time() < start_time + DUREE_REMPLISSAGE - score_modifier:
                 time.sleep(0.1)
                 if self.verre():
-                    #print("glouglou")
                     self.output.on()
                 else:
-                    #print("pas glouglou")
                     self.output.off()
                 self.output.on()
 
         except KeyboardInterrupt:
             pass
         self.output.off()
-        
+    def calculate_score_modifier(self, score):
+        if score > 50 :
+            return 0
+        return 2 - (score/25)
     def verre(self):
         return self.receiver.is_pressed
 
     def reward(self, score):
-        print("YOOOOOOOOOOOOLO")
-        print("score : ", score)
-        self.remplissage()
+        self.remplissage(score)

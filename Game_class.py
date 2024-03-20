@@ -11,7 +11,8 @@ from Player_class import Player
 from const import (BLACK, FPS, HEALTH_STATE, GAME_STATE, SCORE_FONT, SCORE_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH, BONUS_RATE_MIN,
                    BONUS_RATE_MAX, NB_ENNEMY_ALLOWED_TO_PASS)
 from Menu import Menu
-from Reward import Reward
+from Reward_class import Reward
+from Idle_class import Idle
 from Statistics import Statistics
 
 class Game():
@@ -37,18 +38,6 @@ class Game():
             self.enemiesAttributes = data["enemies"]
             self.bonusAttributes = data["bonus"]   
 
-        # TODO remove
-        # with open("score_board.json", "r") as f:
-        #     self.score_board = json.loads(f.read())
-        #
-        # self.score_max = 0
-        # for item in self.score_board:
-        #     if len(self.score_board[item]) > 0:
-        #         if max(self.score_board[item]) > self.score_max:
-        #             self.score_max = max(self.score_board[item])
-        #             self.school_score_max = item
-
-
         #Setting up Fonts
         self.font = pygame.font.SysFont("Verdana", 30)
         self.font_small = pygame.font.SysFont("Verdana", 20)
@@ -57,6 +46,7 @@ class Game():
         self.font_score = pygame.font.Font("src/fonts/" + SCORE_FONT, SCORE_SIZE)
         self.menu = Menu()
         self.reward = Reward()
+        self.idle = Idle()
         self.statistics = Statistics()
         
         self.reset()
@@ -82,7 +72,6 @@ class Game():
         self.enemies = pygame.sprite.Group()
         self.bonus = pygame.sprite.Group()
         self.explosions = pygame.sprite.Group()
-        self.statistics.reset()
         self.menu.reset()
 
     def check_exit(self):
@@ -116,8 +105,12 @@ class Game():
             self.menu.render(self.screen)
 
         if self.state == GAME_STATE.IDLE:
-            self.player.blit(self.screen)
-            self.display_waiting()
+            # self.player.blit(self.screen)
+            # self.display_waiting()
+            self.idle.render(self.screen)
+            return
+        if self.state == GAME_STATE.REWARD:
+            self.reward.render(self.screen)
             return
 
         for enemy in self.enemies:
@@ -141,9 +134,7 @@ class Game():
     def update(self):
         if self.state == GAME_STATE.IDLE:
             print("idle")
-            # if self.control.shoot():
-                # self.state = GAME_STATE.TUTO
-                # self.player.animate()
+            pass
 
         if self.state == GAME_STATE.MENU:
             if self.control.shoot():
@@ -178,9 +169,7 @@ class Game():
             self.state=GAME_STATE.ENDING
             
         if self.state==GAME_STATE.ENDING and len(self.explosions) == 0:
-            #TODO
-            # self.score_board[self.player.school].append(self.score)
-            # self.store_score()
+            self.statistics.add_score(self.score,self.player.school)
             self.state = GAME_STATE.ENDED
             return
 
@@ -197,13 +186,6 @@ class Game():
         pygame.display.flip()
     
         self.clock.tick(FPS)  # limits FPS to 60
-
-    def store_score(self):
-        if self.score_max < self.score:
-            self.score_max = self.score
-            self.school_score_max = self.player.school
-        with open("score_board.json", "w") as f:
-            f.write(json.dumps(self.score_board))
 
     def spawn(self):
         if self.state==GAME_STATE.ENDED or self.state==GAME_STATE.ENDING:
@@ -255,5 +237,4 @@ class Game():
         return self.state == GAME_STATE.IDLE
 
     def rewardMode(self):
-        print("reward")
-        self.reward.render(self.screen)
+        self.state = GAME_STATE.REWARD

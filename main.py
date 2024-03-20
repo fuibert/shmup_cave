@@ -15,7 +15,6 @@ while not game.exit_requested():
         game.idleMode()
         print("en attente d'un verre")
         time.sleep(0.1)
-        # game.reset()
     if IO_Controller.verre() and game.isIdle():
         game.menuMode()
 
@@ -23,5 +22,6 @@ while not game.exit_requested():
 
     if game.state == GAME_STATE.ENDED:
         game.rewardMode()
+        game.loop()
         IO_Controller.reward(game.score)
         game.reset()
