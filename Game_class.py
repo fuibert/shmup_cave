@@ -120,9 +120,8 @@ class Game():
         if self.state != GAME_STATE.MENU:
             self.bonus.draw(self.screen)
             self.player.blit(self.screen)
-            
-        self.display_score = self.font_score.render("SCORE: " + str(self.score), True, BLACK)
-        self.screen.blit(self.display_score, ((SCREEN_WIDTH / 2) - (self.display_score.get_rect().width / 2), 20))
+            self.display_score = self.font_score.render("SCORE: " + str(self.score), True, BLACK)
+            self.screen.blit(self.display_score, ((SCREEN_WIDTH / 2) - (self.display_score.get_rect().width / 2), 20))
 
         return
 
@@ -132,13 +131,13 @@ class Game():
     def update(self):
         if self.state == GAME_STATE.IDLE:
             print("idle")
-            self.start_time = datetime.datetime.now()
             pass
 
         if self.state == GAME_STATE.MENU:
             if self.control.shoot():
                 self.player.set_player_school(self.menu.chose_school("SHOOT"))
                 # self.state = GAME_STATE.IDLE
+                self.start_time = datetime.datetime.now()
                 self.state = GAME_STATE.TUTO
                 self.player.animate()
             if self.control.up():
