@@ -75,7 +75,7 @@
             "bullet": "bullet_5.png",
             "speed": 0.5,
             "health": 12,
-            "cadence": 400,
+            "cadence": 2000,
             "damage": 3,
             "score": 7
         },

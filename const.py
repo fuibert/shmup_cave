@@ -48,6 +48,9 @@ BULLET_SIZE_RATIO = 0.2
 
 NB_ENNEMY_ALLOWED_TO_PASS = 3
 
+MIN_ENEMY_DELAY = 1
+MAX_ENEMY_DELAY = 7
+
 ################################### IO
 ################## IO - MODE
 

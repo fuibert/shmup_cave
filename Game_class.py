@@ -5,7 +5,7 @@ from Control_class import Control
 from Enemy_class import Enemy
 from Explosion_class import Explosion
 from Player_class import Player
-from const import (BLACK, FPS, HEALTH_STATE, GAME_STATE, MAX_TUTO_STEP, SCORE_FONT, SCORE_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH, BONUS_RATE_MIN, BONUS_RATE_MAX, NB_ENNEMY_ALLOWED_TO_PASS, TUTO_DURATION)
+from const import (BLACK, FPS, HEALTH_STATE, GAME_STATE, MAX_TUTO_STEP, SCORE_FONT, SCORE_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH, BONUS_RATE_MIN, BONUS_RATE_MAX, NB_ENNEMY_ALLOWED_TO_PASS, TUTO_DURATION, MIN_ENEMY_DELAY, MAX_ENEMY_DELAY)
 from Menu import Menu
 from Reward_class import Reward
 from Idle_class import Idle
@@ -163,9 +163,9 @@ class Game():
         self.collisions()
         self.spawn()
 
-        if self.state == GAME_STATE.TUTO:
-            if datetime.datetime.now() - self.start_time >= datetime.timedelta(TUTO_DURATION): 
-                self.state = GAME_STATE.RUNNING
+        # if self.state == GAME_STATE.TUTO:
+        #     if datetime.datetime.now() - self.start_time >= datetime.timedelta(TUTO_DURATION):
+        #         self.state = GAME_STATE.RUNNING
                         
         if self.player.is_dead():
             self.state=GAME_STATE.ENDING
@@ -190,26 +190,48 @@ class Game():
         self.clock.tick(FPS)  # limits FPS to 60
 
     def spawn(self):
-        if self.state==GAME_STATE.ENDED or self.state==GAME_STATE.ENDING:
+        if self.state!=GAME_STATE.TUTO and self.state!=GAME_STATE.RUNNING:
             return
 
         if self.state==GAME_STATE.TUTO:
             if(len(self.enemies) == 0 and self.player.is_alive()):
-                if self.tuto_step == 0:
+                if self.tuto_step == 0 or self.tuto_step == 1:
                     self.enemies.add(Enemy(list(self.enemiesAttributes.values())[0])) 
-                if self.tuto_step == 1:
+                if self.tuto_step == 2:
                     self.enemies.add(Enemy(list(self.enemiesAttributes.values())[0])) 
                     self.enemies.add(Enemy(list(self.enemiesAttributes.values())[1])) 
-                    self.enemies.add(Enemy(list(self.enemiesAttributes.values())[2]))    
+                    self.enemies.add(Enemy(list(self.enemiesAttributes.values())[2]))
+                if self.tuto_step == 3:
+                    self.enemies.add(Enemy(list(self.enemiesAttributes.values())[3]))
+                    bonus = random.choices(list(self.bonusAttributes.values()),
+                                           [val["weight"] for val in self.bonusAttributes.values()], k=1)[0]
+                    self.bonus.add(Bonus(bonus))
+                if self.tuto_step == 4:
+                    self.enemies.add(Enemy(list(self.enemiesAttributes.values())[6]))
+                if self.tuto_step == 5:
+                    if (len(self.enemies) != 0 ) :
+                        return
+                    else:
+                        bonus = random.choices(list(self.bonusAttributes.values()),
+                                               [val["weight"] for val in self.bonusAttributes.values()], k=1)[0]
+                        self.bonus.add(Bonus(bonus))
+                        bonus = random.choices(list(self.bonusAttributes.values()),
+                                               [val["weight"] for val in self.bonusAttributes.values()], k=1)[0]
+                        self.bonus.add(Bonus(bonus))
+                        bonus = random.choices(list(self.bonusAttributes.values()),
+                                               [val["weight"] for val in self.bonusAttributes.values()], k=1)[0]
+                        self.bonus.add(Bonus(bonus))
                 self.tuto_step += 1
-            
+
             if self.tuto_step >= MAX_TUTO_STEP:
-                self.state = GAME_STATE.RUNNING  
-            return                                                                            
+                Game.apparition_rate = datetime.datetime.now() + datetime.timedelta(seconds=random.randint(MIN_ENEMY_DELAY, MAX_ENEMY_DELAY))
+                Game.apparition_rate_bonus = datetime.datetime.now() + datetime.timedelta(seconds=random.randint(BONUS_RATE_MIN, BONUS_RATE_MAX))
+                self.state = GAME_STATE.RUNNING
+            return
                                       
- #       if Game.apparition_rate <= datetime.datetime.now():
- #           self.enemies.add(Enemy(random.choice(list(self.enemiesAttributes.values()))))
- #           Game.apparition_rate += datetime.timedelta(seconds=random.randint(0, 7))
+        if Game.apparition_rate <= datetime.datetime.now():
+            self.enemies.add(Enemy(random.choice(list(self.enemiesAttributes.values()))))
+            Game.apparition_rate += datetime.timedelta(seconds=random.randint(MIN_ENEMY_DELAY, MAX_ENEMY_DELAY))
         if(len(self.enemies) == 0 and self.player.is_alive()):
             self.enemies.add(Enemy(random.choice(list(self.enemiesAttributes.values()))))
 
