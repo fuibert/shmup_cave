@@ -36,16 +36,17 @@ class Game():
             self.playerAttributes = data["player"]
             self.enemiesAttributes = data["enemies"]
             self.bonusAttributes = data["bonus"]   
-        
-        with open("score_board.json", "r") as f:
-            self.score_board = json.loads(f.read())
 
-        self.score_max = 0
-        for item in self.score_board:
-            if len(self.score_board[item]) > 0:
-                if max(self.score_board[item]) > self.score_max:
-                    self.score_max = max(self.score_board[item])
-                    self.school_score_max = item
+        # TODO remove
+        # with open("score_board.json", "r") as f:
+        #     self.score_board = json.loads(f.read())
+        #
+        # self.score_max = 0
+        # for item in self.score_board:
+        #     if len(self.score_board[item]) > 0:
+        #         if max(self.score_board[item]) > self.score_max:
+        #             self.score_max = max(self.score_board[item])
+        #             self.school_score_max = item
 
 
         #Setting up Fonts
@@ -81,7 +82,7 @@ class Game():
         self.enemies = pygame.sprite.Group()
         self.bonus = pygame.sprite.Group()
         self.explosions = pygame.sprite.Group()
-        self.statistics.reset(self.score_board)
+        self.statistics.reset()
         self.menu.reset()
 
     def check_exit(self):
@@ -177,8 +178,9 @@ class Game():
             self.state=GAME_STATE.ENDING
             
         if self.state==GAME_STATE.ENDING and len(self.explosions) == 0:
-            self.score_board[self.player.school].append(self.score)
-            self.store_score()
+            #TODO
+            # self.score_board[self.player.school].append(self.score)
+            # self.store_score()
             self.state = GAME_STATE.ENDED
             return
 
