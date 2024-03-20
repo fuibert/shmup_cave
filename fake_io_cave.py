@@ -1,11 +1,11 @@
 import time
-from const import RELAY_PIN, CAPTOR_LED_PIN, RECEIVER_PIN, FAKE_RELAY_PIN, IO_MODE, DUREE_REMPLISSAGE
+from const import RELAY_PIN, CAPTOR_LED_PIN, RECEIVER_PIN, FAKE_RELAY_PIN, IO_MODE, DUREE_REMPLISSAGE, FAKE_GODET_IS_LA
 from tkinter import *
 
 class Fake_output():
     def __init__(self, mytype):
         self.mytype = mytype
-        self.is_pressed = True
+        self.is_pressed = FAKE_GODET_IS_LA
     def on(self):
         print("ALLUMAGE DE ", self.mytype)
     def off(self):
