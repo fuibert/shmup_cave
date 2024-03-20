@@ -23,7 +23,7 @@ class Statistics(pygame.sprite.Sprite):
         keys = list(tmp_list)
         for i in range(0, 10):
             placement = i+1
-            score_tmp = self.font_score.render(str(tmp_list[keys[i]]) + ": " + str(keys[i]), True,
+            score_tmp = self.font_score.render(str(keys[i]) + ": " + str(tmp_list[keys[i]]), True,
                                                BLACK)
             placement_tmp = self.font_score.render(str(placement) + "." , True,BLACK)
             screen.blit(score_tmp, ((SCREEN_WIDTH * 0.5) - (score_tmp.get_rect().width / 2),
