@@ -1,6 +1,6 @@
 import pygame
 from Moving_elt_class import MovingElement
-from const import *
+from const import BULLET_SIZE_RATIO,BULLET_SPEED,SCREEN_HEIGHT
 
 class Bullet(MovingElement):
     def __init__(self, pos, direction, path, damage, size=0.03):
