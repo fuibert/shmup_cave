@@ -64,21 +64,19 @@ class Menu(pygame.sprite.Sprite):
             y += self.image_size["height"] * 0.5                     
         return (x, y)              
                             
-
-
-    def chose_school(self, action):
-        if action == "SHOOT":
-            self.select_done = True
-            return Menu.school_name[self.selected_image]
+    def move(self, action):
         if action == "DOWN" and self.selected_image + self.number_of_column < len(Menu.school_list):
             self.selected_image += self.number_of_column
-        if action == "UP" and self.selected_image - self.number_of_column >= 0:
+        elif action == "UP" and self.selected_image - self.number_of_column >= 0:
             self.selected_image -= self.number_of_column
-        if action == "LEFT" and self.selected_image - 1 >= 0:
+        elif action == "LEFT" and self.selected_image - 1 >= 0:
             self.selected_image -= 1
-        if action == "RIGHT" and self.selected_image + 1 < len(Menu.school_list):
+        elif action == "RIGHT" and self.selected_image + 1 < len(Menu.school_list):
             self.selected_image += 1
-        return
+            
+    def chose_school(self):
+            self.select_done = True
+            return Menu.school_name[self.selected_image]
 
     def reset(self):
         self.selected_image = 0
