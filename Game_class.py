@@ -135,19 +135,18 @@ class Game():
 
         if self.state == GAME_STATE.MENU:
             if self.control.shoot():
-                self.player.set_player_school(self.menu.chose_school("SHOOT"))
-                # self.state = GAME_STATE.IDLE
+                self.player.set_player_school(self.menu.chose_school())
                 self.start_time = datetime.datetime.now()
                 self.state = GAME_STATE.TUTO
                 self.player.animate()
             if self.control.up():
-                self.menu.chose_school("UP")
+                self.menu.move("UP")
             if self.control.down():
-                self.menu.chose_school("DOWN")
+                self.menu.move("DOWN")
             if self.control.left():
-                self.menu.chose_school("LEFT")
+                self.menu.move("LEFT")
             if self.control.right():
-                self.menu.chose_school("RIGHT")
+                self.menu.move("RIGHT")
 
         self.background.animate(self.state != GAME_STATE.IDLE and self.state != GAME_STATE.MENU)
         self.background.update()
