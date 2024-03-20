@@ -3,10 +3,6 @@ import os
 from const import *
 
 class Idle(pygame.sprite.Sprite):
-
-    school_list = []
-    school_name = []
-
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
 
