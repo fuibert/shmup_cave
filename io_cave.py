@@ -15,7 +15,7 @@ class IO_Controller():
 
     def remplissage(self, score):
         start_time = time.time()
-        score_modifier = self.calculate_score_modifier()
+        score_modifier = self.calculate_score_modifier(score)
         try:
             while self.verre() and time.time() < start_time + DUREE_REMPLISSAGE - score_modifier:
                 time.sleep(0.1)

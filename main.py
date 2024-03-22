@@ -22,6 +22,9 @@ while not game.exit_requested():
 
     if game.state == GAME_STATE.ENDED:
         game.rewardMode()
+        time.sleep(0.1)
         game.loop()
+        
         IO_Controller.reward(game.score)
+        
         game.reset()

@@ -109,6 +109,7 @@ class Game():
             self.idle.render(self.screen)
             return
         if self.state == GAME_STATE.REWARD:
+            print("REWARD")
             self.reward.render(self.screen)
             return
 
@@ -168,9 +169,11 @@ class Game():
         #         self.state = GAME_STATE.RUNNING
                         
         if self.player.is_dead():
+            print("is_dead")
             self.state=GAME_STATE.ENDING
             
         if self.state==GAME_STATE.ENDING and len(self.explosions) == 0:
+            print("ended")
             self.statistics.add_score(self.score,self.player.school)
             self.state = GAME_STATE.ENDED
             return
