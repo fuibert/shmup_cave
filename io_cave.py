@@ -17,7 +17,7 @@ class IO_Controller():
         start_time = time.time()
         score_modifier = self.calculate_score_modifier(score)
         try:
-            while self.verre() and time.time() < start_time + DUREE_REMPLISSAGE - score_modifier:
+            while self.verre() and time.time() < start_time + DUREE_REMPLISSAGE:
                 time.sleep(0.1)
                 if self.verre():
                     self.output.on()

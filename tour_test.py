@@ -1,12 +1,12 @@
-from gpiozero import LED, Button
+from gpiozero import LED, Button, OutputDevice
 import time
 from  io_cave import *
 
 
 def old() :
     led = LED(16)
-    #led = LED(23)
-    #led = LED(24)
+    led = LED(23)
+    led = LED(24)
 
     try:
         while True:
